@@ -1,0 +1,10 @@
+# Native project files
+android/
+ios/
+
+# Package manager internals
+vendor/
+.yarn/
+
+# Auto-generated — do not reformat
+src/db/migrations/
