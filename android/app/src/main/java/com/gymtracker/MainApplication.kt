@@ -1,4 +1,4 @@
-package com.navigationproject
+package com.gymtracker
 
 import android.app.Application
 import com.facebook.react.PackageList

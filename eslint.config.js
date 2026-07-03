@@ -115,8 +115,7 @@ module.exports = [
         { blankLine: 'any', prev: ['const', 'let', 'var'], next: ['const', 'let', 'var'] },
       ],
 
-      // TypeScript
-      'no-unused-vars': 'off',
+      // TS
       '@typescript-eslint/no-unused-vars': [
         'error',
         { ignoreRestSiblings: true, argsIgnorePattern: '^_' },

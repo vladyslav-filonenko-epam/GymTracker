@@ -1,11 +1,11 @@
 {
-  "name": "NavigationProject",
+  "name": "gymtracker",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "lint": "eslint src/",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "start": "react-native start",
     "test": "jest",
     "test:co": "yarn test --coverage",
