@@ -40,8 +40,8 @@ export const keychainUtils = {
   deletePinHash: () => Keychain.resetGenericPassword({ service: PINCODE_SERVICE }),
 };
 ```
-Keychain keys:
-- `pincode_hash` — hashed PIN, stored via `service: 'com.gymtracker.pincode'`
+Keychain service identifiers:
+- `com.gymtracker.pincode` — stores the hashed PIN (username: `'pin'`, password: hash)
 
 **Rule:** never store the PIN hash in MMKV — always use Keychain.
 
@@ -85,12 +85,18 @@ export const exercisesRepository = {
   create: (data: NewExercise): Promise<Exercise> =>
     db.insert(exercises).values(data).returning().then(r => r[0]),
   update: (id: number, data: Partial<NewExercise>): Promise<Exercise> =>
-    db.update(exercises).set({ ...data, updatedAt: Date.now() }).where(eq(exercises.id, id)).returning().then(r => r[0]),
+    db.update(exercises)
+      .set({ ...data, updatedAt: Date.now() })
+      .where(eq(exercises.id, id))
+      .returning()
+      .then(r => r[0]),
   delete: (id: number): Promise<void> =>
     db.delete(exercises).where(eq(exercises.id, id)).then(() => undefined),
 };
 ```
-File naming: `src/db/repositories/exercises-repository.ts` (kebab-case, `-repository` suffix)
+
+## Repository File Naming
+`src/db/repositories/<name>-repository.ts` — kebab-case with `-repository` suffix.
 
 ## Exercise Library Seed Data
 Use **free-exercise-db** (https://github.com/yuhonas/free-exercise-db) — ~800 open-source exercises

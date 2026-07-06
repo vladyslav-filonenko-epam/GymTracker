@@ -43,6 +43,9 @@ const config = {
   clearMocks: true,
   restoreMocks: true,
 
+  // Bootstrap jest-extended matchers after Jest environment loads
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+
   // Coverage
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',

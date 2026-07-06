@@ -1,13 +1,16 @@
 ---
-applyTo: "**/__tests__/**, **/*.test.{ts,tsx}, **/*.spec.{ts,tsx}"
+applyTo:
+  - "**/__tests__/**"
+  - "**/*.test.{ts,tsx}"
+  - "**/*.spec.{ts,tsx}"
 ---
 
 # Testing Instructions
 
 ## Stack
 - **Jest** — test runner (configured in `jest.config.js`)
-- **@testing-library/react-native** — component and hook testing
-- **react-test-renderer** — snapshot testing
+- **jest.setup.ts** — global test setup (runs before every test file; add global mocks/config here)
+- **@testing-library/react-native** — component and hook testing (also used for snapshots)
 - **jest-extended** — additional matchers
 
 ## Principles
@@ -46,22 +49,79 @@ Source: src/features/workout/components/WorkoutCard/helpers.ts
 Test:   src/features/workout/components/WorkoutCard/__tests__/helpers.test.ts
 ```
 
-## Coverage Requirements
-| Type | Unit Tests | Snapshot |
-|---|---|---|
-| Utilities | happy path + edge cases + errors | ❌ |
-| Hooks | initial state + each action + error + loading | ❌ |
-| Components | renders + interactions + conditionals | ✅ mandatory |
-| Screens | renders + interactions + conditionals | ✅ mandatory |
-| Repositories | CRUD success + DB error handling | ❌ |
-
 ## Snapshot Tests
+Use `render` from `@testing-library/react-native` — `react-test-renderer` is deprecated.
 ```tsx
-import renderer from 'react-test-renderer';
+import { render } from '@testing-library/react-native';
 
 it('renders correctly', () => {
-  const tree = renderer.create(<WorkoutCard workout={mockWorkout} onPress={jest.fn()} />).toJSON();
-  expect(tree).toMatchSnapshot();
+  const { toJSON } = render(<WorkoutCard workout={mockWorkout} onPress={jest.fn()} />);
+
+  expect(toJSON()).toMatchSnapshot();
+});
+```
+
+## Hook Tests
+Use `renderHook` and `act` from `@testing-library/react-native`. Aim to cover initial state, each action, async loading transitions, and error handling:
+```ts
+// src/features/workout/hooks/__tests__/use-workout-form.test.ts
+import { act, renderHook } from '@testing-library/react-native';
+
+import { useWorkoutForm } from '../use-workout-form';
+
+jest.mock('src/features/workout/store/workout-store');
+
+describe('useWorkoutForm', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should have empty name and no error initially', () => {
+    // Arrange & Act
+    const { result } = renderHook(() => useWorkoutForm());
+
+    // Assert
+    expect(result.current.name).toBe('');
+    expect(result.current.error).toBeNull();
+    expect(result.current.isSubmitting).toBe(false);
+  });
+
+  it('should set error when submitting empty name', async () => {
+    // Arrange
+    const { result } = renderHook(() => useWorkoutForm());
+
+    // Act
+    await act(async () => {
+      await result.current.submit();
+    });
+
+    // Assert
+    expect(result.current.error).toBe('Name is required');
+  });
+});
+```
+
+## Helper Tests
+Every helper must be tested for happy path, edge cases, and error cases:
+```ts
+// src/shared/utils/__tests__/format-weight.test.ts
+import { formatWeight } from '../format-weight';
+
+describe('formatWeight', () => {
+  it('should format weight with kg suffix', () => {
+    // Arrange
+    const weight = 100;
+
+    // Act
+    const result = formatWeight(weight);
+
+    // Assert
+    expect(result).toBe('100 kg');
+  });
+
+  it('should handle zero weight', () => {
+    expect(formatWeight(0)).toBe('0 kg');
+  });
 });
 ```
 
@@ -71,6 +131,7 @@ it('renders correctly', () => {
 jest.mock('react-native-mmkv', () => ({
   MMKV: jest.fn(() => {
     const store = new Map<string, unknown>();
+
     return {
       set: (k: string, v: unknown) => store.set(k, v),
       getString: (k: string) => store.get(k) as string | undefined,

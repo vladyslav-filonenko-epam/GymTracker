@@ -44,8 +44,6 @@ Each component lives in its own folder. Only create optional files when needed �
 // 2. Props interface
 // 3. Component — arrow function, export on the same line as declaration
 
-import { createStyles } from './styles';
-
 interface WorkoutCardProps {
   workout: Workout;
   onPress: () => void;
@@ -85,10 +83,11 @@ export { WorkoutCard } from './WorkoutCard';
 - **Arrow functions everywhere** — no `function` declarations for components, hooks, or helpers
 - **Export on the same line as declaration** — `export const Foo = () => ...` not `const Foo = ...; export { Foo }`
 - **All `index` files use `.ts` extension** — even when re-exporting `.tsx` components
-- NO `StyleSheet.create` inside `.tsx` files — always in `styles.ts`
-- NO inline styles — all styles go through `createStyles`
+- NO `StyleSheet.create` inside `.tsx` files — if styles are needed, always put them in `styles.ts`
+- NO inline styles — when styles are needed, use `createStyles` in `styles.ts`
 - Extract all logic from screens into hooks
 - No commented-out code in commits
+- **Every source file should have a corresponding test file** — exceptions only for pure config, barrel `index.ts` re-exports, and type-only files
 
 ## Prettier
 Config: `printWidth: 100`, `singleQuote: true`, `jsxSingleQuote: false`, `trailingComma: 'all'`, `arrowParens: 'avoid'`, `bracketSameLine: false`, `endOfLine: 'lf'`
