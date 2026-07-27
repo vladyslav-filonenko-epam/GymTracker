@@ -1,0 +1,1 @@
+export { ExercisesListScreen } from './screens';

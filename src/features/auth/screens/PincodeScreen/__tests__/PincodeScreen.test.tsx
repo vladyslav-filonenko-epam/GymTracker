@@ -1,0 +1,275 @@
+import React from 'react';
+
+import { act, fireEvent, render, screen } from '@testing-library/react-native';
+
+import { PincodeScreen } from '../PincodeScreen';
+
+const mockNavigate = jest.fn();
+
+jest.mock('@react-navigation/native', () => ({
+  useNavigation: () => ({ navigate: mockNavigate, goBack: jest.fn(), replace: jest.fn() }),
+  useRoute: () => ({ params: {} }),
+  NavigationContainer: ({ children }: { children: React.ReactNode }) => children,
+}));
+
+jest.mock('zustand/react/shallow', () => ({
+  useShallow: (fn: (state: unknown) => unknown) => fn,
+}));
+
+jest.mock('src/shared/theme', () => ({
+  useTheme: () => ({
+    colors: {
+      background: { primary: '#0C0C0E', secondary: '#1E1E22', card: '#161618' },
+      surface: '#2A2A2F',
+      accent: { primary: '#C8FF00', secondary: '#A8D900' },
+      text: { primary: '#F0F0F2', secondary: '#888896', muted: '#555560' },
+      border: 'rgba(255, 255, 255, 0.08)',
+      status: { success: '#4CAF50', error: '#FF3B5C', warning: '#FF9800' },
+      overlay: { subtle: 'rgba(255,255,255,0.06)', border: 'rgba(255,255,255,0.2)' },
+      static: { white: '#FFFFFF', black: '#000000' },
+    },
+    spacing: { xs: 4, sm: 8, md: 12, lg: 16, xl: 20, xxl: 24, xxxl: 32, huge: 48, giant: 64 },
+    radius: { sm: 4, md: 8, lg: 12, xl: 16, full: 9999 },
+    theme: 'dark',
+    setTheme: jest.fn(),
+  }),
+}));
+
+const mockInitAuth = jest.fn().mockResolvedValue(undefined);
+const mockSetAuthStep = jest.fn();
+const mockSetupPin = jest.fn().mockResolvedValue(undefined);
+const mockVerifyPin = jest.fn().mockResolvedValue(true);
+
+let mockAuthStepState: 'create' | 'confirm' | 'verify' = 'create';
+
+jest.mock('src/features/auth/store', () => ({
+  useAuthStore: (selector: (state: unknown) => unknown) =>
+    selector({
+      authStep: mockAuthStepState,
+      setAuthStep: mockSetAuthStep,
+      setupPin: mockSetupPin,
+      verifyPin: mockVerifyPin,
+      initAuth: mockInitAuth,
+    }),
+}));
+
+describe('PincodeScreen', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockAuthStepState = 'create';
+    mockInitAuth.mockResolvedValue(undefined);
+    mockSetupPin.mockResolvedValue(undefined);
+    mockVerifyPin.mockResolvedValue(true);
+  });
+
+  it('should render the "CREATE PINCODE" subtitle when authStep is "create"', () => {
+    // Arrange
+    mockAuthStepState = 'create';
+
+    // Act
+    render(<PincodeScreen />);
+
+    // Assert
+    expect(screen.getByText('CREATE PINCODE')).toBeTruthy();
+    expect(screen.getByText('GYMTRACKER')).toBeTruthy();
+  });
+
+  it('should render the "CONFIRM PINCODE" subtitle when authStep is "confirm"', () => {
+    // Arrange
+    mockAuthStepState = 'confirm';
+
+    // Act
+    render(<PincodeScreen />);
+
+    // Assert
+    expect(screen.getByText('CONFIRM PINCODE')).toBeTruthy();
+  });
+
+  it('should render the "ENTER PINCODE" subtitle when authStep is "verify"', () => {
+    // Arrange
+    mockAuthStepState = 'verify';
+
+    // Act
+    render(<PincodeScreen />);
+
+    // Assert
+    expect(screen.getByText('ENTER PINCODE')).toBeTruthy();
+  });
+
+  it('should call initAuth on mount', () => {
+    // Arrange
+    // no additional arrangement needed
+
+    // Act
+    render(<PincodeScreen />);
+
+    // Assert
+    expect(mockInitAuth).toHaveBeenCalledTimes(1);
+  });
+
+  it('should render all numpad digit keys', () => {
+    // Arrange
+    // no additional arrangement needed
+
+    // Act
+    render(<PincodeScreen />);
+
+    // Assert
+    ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'].forEach(digit => {
+      expect(screen.getByText(digit)).toBeTruthy();
+    });
+  });
+
+  it('should call setAuthStep with "confirm" after entering a first full pin during creation', async () => {
+    // Arrange
+    mockAuthStepState = 'create';
+    render(<PincodeScreen />);
+
+    // Act
+    fireEvent.press(screen.getByText('1'));
+    fireEvent.press(screen.getByText('2'));
+    fireEvent.press(screen.getByText('3'));
+    fireEvent.press(screen.getByText('4'));
+
+    // Assert
+    await screen.findByText('1');
+    expect(mockSetAuthStep).toHaveBeenCalledWith('confirm');
+  });
+
+  it('should call verifyPin when a full pin is entered during verify step', async () => {
+    // Arrange
+    mockAuthStepState = 'verify';
+    render(<PincodeScreen />);
+
+    // Act
+    fireEvent.press(screen.getByText('1'));
+    fireEvent.press(screen.getByText('2'));
+    fireEvent.press(screen.getByText('3'));
+    fireEvent.press(screen.getByText('4'));
+    await screen.findByText('1');
+
+    // Assert
+    expect(mockVerifyPin).toHaveBeenCalledWith('1234');
+  });
+
+  it('should navigate to "App" when verifyPin succeeds', async () => {
+    // Arrange
+    mockAuthStepState = 'verify';
+    mockVerifyPin.mockResolvedValue(true);
+    render(<PincodeScreen />);
+
+    // Act
+    fireEvent.press(screen.getByText('1'));
+    fireEvent.press(screen.getByText('2'));
+    fireEvent.press(screen.getByText('3'));
+    fireEvent.press(screen.getByText('4'));
+    await screen.findByText('1');
+
+    // Assert
+    expect(mockNavigate).toHaveBeenCalledWith('App');
+  });
+
+  it('should not navigate when verifyPin fails', async () => {
+    // Arrange
+    mockAuthStepState = 'verify';
+    mockVerifyPin.mockResolvedValue(false);
+    jest.useFakeTimers();
+    render(<PincodeScreen />);
+
+    // Act
+    fireEvent.press(screen.getByText('1'));
+    fireEvent.press(screen.getByText('2'));
+    fireEvent.press(screen.getByText('3'));
+    await act(async () => {
+      fireEvent.press(screen.getByText('4'));
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+    act(() => {
+      jest.runAllTimers();
+    });
+    jest.useRealTimers();
+
+    // Assert
+    expect(mockNavigate).not.toHaveBeenCalled();
+  });
+
+  it('should call setupPin and navigate when confirmed pin matches the first pin', async () => {
+    // Arrange — make setAuthStep mutate the mock state so re-render sees 'confirm'
+    mockSetAuthStep.mockImplementation((step: 'create' | 'confirm' | 'verify') => {
+      mockAuthStepState = step;
+    });
+    mockAuthStepState = 'create';
+
+    render(<PincodeScreen />);
+
+    // Act — enter first PIN in create step (no act wrapper so each press flushes state)
+    fireEvent.press(screen.getByText('1'));
+    fireEvent.press(screen.getByText('2'));
+    fireEvent.press(screen.getByText('3'));
+    fireEvent.press(screen.getByText('4'));
+
+    // Wait for component to transition to confirm step
+    await screen.findByText('CONFIRM PINCODE');
+
+    // Enter same PIN in confirm step
+    fireEvent.press(screen.getByText('1'));
+    fireEvent.press(screen.getByText('2'));
+    fireEvent.press(screen.getByText('3'));
+    fireEvent.press(screen.getByText('4'));
+
+    // Wait for async setupPin to complete
+    await screen.findByText('CONFIRM PINCODE');
+
+    // Assert
+    expect(mockSetupPin).toHaveBeenCalledWith('1234');
+    expect(mockNavigate).toHaveBeenCalledWith('App');
+  });
+
+  it('should not call setupPin and should reset to create when confirmed pin does not match', async () => {
+    // Arrange — make setAuthStep mutate the mock state so re-render sees 'confirm'
+    jest.useFakeTimers();
+    mockSetAuthStep.mockImplementation((step: 'create' | 'confirm' | 'verify') => {
+      mockAuthStepState = step;
+    });
+    mockAuthStepState = 'create';
+
+    render(<PincodeScreen />);
+
+    // Act — enter first PIN (create step): 1234
+    fireEvent.press(screen.getByText('1'));
+    fireEvent.press(screen.getByText('2'));
+    fireEvent.press(screen.getByText('3'));
+    fireEvent.press(screen.getByText('4'));
+
+    // Wait for component to transition to confirm step
+    await screen.findByText('CONFIRM PINCODE');
+
+    // Enter a different PIN (confirm step): 5678
+    fireEvent.press(screen.getByText('5'));
+    fireEvent.press(screen.getByText('6'));
+    fireEvent.press(screen.getByText('7'));
+    fireEvent.press(screen.getByText('8'));
+
+    // Run timers for shake animation (600 ms) and any setTimeout calls
+    act(() => {
+      jest.runAllTimers();
+    });
+    jest.useRealTimers();
+
+    // Assert
+    expect(mockSetupPin).not.toHaveBeenCalled();
+    expect(mockSetAuthStep).toHaveBeenCalledWith('create');
+  });
+
+  it('should match the snapshot', () => {
+    // Arrange
+    mockAuthStepState = 'create';
+
+    // Act
+    const { toJSON } = render(<PincodeScreen />);
+
+    // Assert
+    expect(toJSON()).toMatchSnapshot();
+  });
+});

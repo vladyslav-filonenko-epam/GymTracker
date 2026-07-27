@@ -125,11 +125,21 @@ Common pitfalls to avoid:
 - Don't create AC files that depend on details from other files the orchestrator can't access
 - Don't rely on the orchestrator having any memory of the conversation — write everything into the file
 
+Branch name & file naming rules:
+
+- **Always ask for the branch name if the user hasn't provided one.** This is a required input — do not invent or guess it.
+- Branch names must follow the project's validate-branch-name pattern: `(story|task|bugfix|hotfix)/GT-{number}` (e.g. `task/GT-42`, `bugfix/GT-17`). If the user provides a name that doesn't match, point out the pattern and ask them to confirm or correct it.
+- **The AC filename must exactly match the branch name**, with `/` replaced by `-` and `.md` appended.
+  - Branch `task/GT-42` → file `task-GT-42.md`
+  - Branch `bugfix/GT-17` → file `bugfix-GT-17.md`
+  - Branch `story/GT-5` → file `story-GT-5.md`
+- The `Branch Name` field inside the AC file must contain the original branch name (with `/`), e.g. `task/GT-42`.
+
 Output requirements:
 
 - Create a properly formatted AC file (use markdown syntax) inside `.github/AC/`
-- File should be named following pattern: "[type]-[brief-description].md" (e.g., "story-user-login.md", "bug-search-filter.md")
-- Full path example: `.github/AC/story-user-login.md`
+- The filename is derived from the branch name as described above
+- Full path example: `.github/AC/task-GT-42.md`
 - Provide the complete AC file content in your response and confirm the file path it was saved to
 
 How the ac-orchestrator consumes AC files — critical context:
@@ -146,6 +156,8 @@ How the ac-orchestrator consumes AC files — critical context:
 Clarification rule:
 
 **Always ask clarifying questions one at a time.** Never bundle multiple questions into a single message. Ask the most important question first, wait for the answer, then ask the next if needed. This ensures clear, focused answers and avoids overwhelming the user.
+
+**The first question to ask (if not already provided) is always the branch name.** Until you have a valid branch name matching `(story|task|bugfix|hotfix)/GT-{number}`, do not proceed to writing the AC file.
 
 When to escalate or ask for help:
 
