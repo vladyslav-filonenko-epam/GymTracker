@@ -54,52 +54,47 @@ status: { success: '#4CAF50', error: '#F44336', warning: '#FF9800' }
 - **FAB**: 56px, `accent.primary`, shadow, positioned bottom-right
 
 ## Usage Rules
-- NEVER hardcode colors — always `const { colors, spacing } = useTheme()`
+- NEVER hardcode colors — always `const { colors, spacing, radius } = useTheme()`
 - NEVER hardcode spacing — use spacing tokens
 - Screen horizontal padding: `spacing.lg` (16)
-- Icons: always use the `Icon` wrapper component — never import SVGs directly
+
+## Design Tokens Reference
+```tsx
+const { colors, spacing, radius } = useTheme();
+```
+
+| Token | Usage |
+|---|---|
+| `colors.background.card` | Card background |
+| `colors.background.primary` | Screen background |
+| `colors.text.primary` | Main text |
+| `colors.text.secondary` | Subtitles, metadata |
+| `colors.accent.primary` | Buttons, highlights |
+| `colors.border` | Borders, dividers |
+| `spacing.lg` (16) | Default padding |
+| `radius.lg` (12) | Card border radius |
+| `radius.md` (8) | Input border radius |
 
 ## Icons
-All icons are SVG files in `src/icons/`. They are used exclusively through the shared `Icon` component.
+All icons are SVG files in `src/shared/icons/`. They are exported as named components from the barrel `index.ts` and imported directly.
 
-### Icon component location
-```
-src/shared/components/Icon/
-  Icon.tsx          ← wrapper component
-  styles.ts         ← styles (if any)
-  index.ts          ← re-export
-  __tests__/
-    Icon.test.tsx
-```
-
-### Usage
 ```tsx
-import { Icon } from 'src/shared/components/Icon';
+import { HomeIcon, DumbbellIcon } from 'src/shared/icons';
 
-<Icon name="home" size={24} color={colors.accent.primary} />
-<Icon name="calendar" size={20} color={colors.text.secondary} />
-```
+const { colors } = useTheme();
 
-### Icon component contract
-```tsx
-import type { SvgProps } from 'react-native-svg';
-
-type IconName = 'home' | 'calendar' | 'account' | 'list-view'; // extend as icons are added
-
-interface IconProps extends Pick<SvgProps, 'width' | 'height'> {
-  name: IconName;
-  size?: number;       // sets both width and height; default: 24
-  color?: string;      // passed as fill to the SVG; default: colors.text.primary
-}
+<HomeIcon width={24} height={24} color={colors.accent.primary} />
 ```
 
 ### Adding a new icon
-1. Place the `.svg` file in `src/shared/icons/<name>.svg` — filename must be kebab-case (e.g. `dumbbell.svg`, `arrow-right.svg`)
-2. Add `'<name>'` to the `IconName` union type in `Icon.tsx`
-3. Add the import and mapping entry inside the icon map
+1. Place the `.svg` file in `src/shared/icons/<name>.svg` — kebab-case filename (e.g. `dumbbell.svg`)
+2. Add the export to `src/shared/icons/index.ts`:
+   ```ts
+   export { default as DumbbellIcon } from './dumbbell.svg';
+   ```
 
 ### Rules
-- Never import SVG files directly in screens or components — always go through `<Icon>`
-- Never hardcode size numbers inline — prefer named sizes if needed (`sm=16, md=24, lg=32`)
-- Color must come from `useTheme()` — never pass a raw hex string
+- Never import SVG files directly from their path — always import from `src/shared/icons`
+- Color must come from `useTheme()` — never pass a raw hex string to `fill`
+- Always specify `width` and `height` explicitly
 

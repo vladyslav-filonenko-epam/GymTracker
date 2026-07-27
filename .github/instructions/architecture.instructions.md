@@ -9,11 +9,16 @@ Every feature in `src/features/<name>/` must contain:
 ```
 <feature>/
   components/   # Feature-scoped UI components (each in its own folder)
+    index.ts    # Re-exports all components
   screens/      # Full screens (each in its own folder)
+    index.ts    # Re-exports all screens
   hooks/        # Hooks used by 2+ components within this feature
+    index.ts    # Re-exports all hooks
   utils/        # Helpers used by 2+ components within this feature
-  constants/    # Constants used by 2+ components within this feature
+    index.ts    # Re-exports all utils
+  constants.ts  # Constants used by 2+ components (promote to constants/ folder if it grows large)
   store/        # Zustand slice for this feature
+    index.ts    # Re-exports the store hook
   types.ts      # TypeScript types local to this feature
   index.ts      # Barrel export (public API of the feature)
 ```
@@ -44,7 +49,7 @@ Start everything inside the component folder. Promote up when a **second consume
 - Used by 2+ features → move to `src/shared/hooks|utils|constants/`
 
 ## State Management
-- One Zustand slice per feature, combined in `src/store/index.ts`
+- One Zustand slice per feature, located in `src/features/<name>/store/` with a barrel `index.ts` — import as `src/features/<name>/store`, no global barrel
 - MMKV stores: `biometrics_enabled`, `theme`, `onboarding_complete`, `is_authenticated`, `exercises_seeded`
 - Keychain stores: `pincode_hash` — sensitive credential, always use `react-native-keychain` for this
 - Never store raw PIN — hash it with a crypto utility before storing
