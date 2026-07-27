@@ -69,3 +69,5 @@ When to Ask for Clarification:
 - If you're uncertain about backward compatibility requirements
 - If the codebase structure is unclear
 - If there are multiple ways to interpret the problem
+
+**Clarification rule: Always ask clarifying questions one at a time.** Never bundle multiple questions in a single message. Ask the most important question first, wait for the answer, then ask the next if needed.

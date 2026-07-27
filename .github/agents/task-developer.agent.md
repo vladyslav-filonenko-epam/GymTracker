@@ -70,6 +70,8 @@ Methodology for task execution:
 - If you need to know which version/feature branch to target
 - If there are multiple valid approaches and you need guidance on which to use
 
+**Clarification rule: Always ask clarifying questions one at a time.** Never bundle multiple questions in a single message. Ask the most important question first, wait for the answer, then ask the next if needed.
+
 **Quality control checklist before considering the task complete:**
 - [ ] Plan was created and documented
 - [ ] Implementation follows project conventions

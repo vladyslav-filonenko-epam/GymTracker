@@ -60,3 +60,5 @@ When to ask for clarification:
 - If you need context about why certain patterns are used
 - If there are conflicting requirements (e.g., coverage target vs. time constraints)
 - If you're unsure about the intended behavior of changed code
+
+**Clarification rule: Always ask clarifying questions one at a time.** Never bundle multiple questions in a single message. Ask the most important question first, wait for the answer, then ask the next if needed.

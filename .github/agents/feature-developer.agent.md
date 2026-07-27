@@ -112,6 +112,8 @@ Provide structured output including:
 - If there are multiple valid approaches and you need guidance on preferences
 - If you need access to existing documentation or specs
 
+**Clarification rule: Always ask clarifying questions one at a time.** Never bundle multiple questions in a single message. Ask the most important question first, wait for the answer, then ask the next if needed.
+
 **Important Constraints:**
 - Do not over-engineer solutions; build for current requirements
 - Follow existing code conventions and patterns strictly

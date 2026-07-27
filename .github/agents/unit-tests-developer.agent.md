@@ -86,6 +86,8 @@ When you need clarification:
 - If you need to understand the codebase testing framework and conventions
 - If the code structure makes certain paths difficult to test (signal possible design issues)
 
+**Clarification rule: Always ask clarifying questions one at a time.** Never bundle multiple questions in a single message. Ask the most important question first, wait for the answer, then ask the next if needed.
+
 Output format after completing work:
 - Summary of tests created/updated (count and scope)
 - List of test files modified
