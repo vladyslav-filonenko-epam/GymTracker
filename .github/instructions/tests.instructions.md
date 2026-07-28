@@ -7,6 +7,12 @@ applyTo:
 
 # Testing Instructions
 
+## What NOT to test
+
+**Static data files must never have test files.** A file that only exports plain `as const` objects with no logic (e.g. `colors.ts`, `tokens.ts`, `constants.ts`) has nothing to test — any assertion would just duplicate the source. Skip test files for these entirely.
+
+Files that **do** need tests: anything with logic, conditions, side effects, or behaviour — stores, hooks, components, utilities, repositories.
+
 ## Stack
 - **Jest** — test runner (configured in `jest.config.js`)
 - **jest.setup.ts** — global test setup (runs before every test file; add global mocks/config here)
@@ -50,7 +56,7 @@ Test:   src/features/workout/components/WorkoutCard/__tests__/helpers.test.ts
 ```
 
 ## Snapshot Tests
-Use `render` from `@testing-library/react-native` — `react-test-renderer` is deprecated.
+Use `render` from `@testing-library/react-native` for all snapshot tests:
 ```tsx
 import { render } from '@testing-library/react-native';
 

@@ -79,6 +79,8 @@ Common pitfalls to avoid:
 - Creating flaky tests with timing dependencies or randomness
 - Over-mocking to the point of testing nothing real
 - Snapshot testing without understanding what changed
+- **NEVER import `react-test-renderer` directly in test files** — it is a required peer dependency of `@testing-library/react-native` and must remain in `devDependencies`, but must never be imported in test code. All component/hook rendering must use `render`, `renderHook`, and `act` from `@testing-library/react-native`.
+- **NEVER write tests for static data/config files** — files that only export plain objects of hardcoded values (e.g. color palettes, spacing tokens, radius tokens, constant maps) must NOT have test files. These have no logic to test and any test would just duplicate the source. Examples of files that must NOT be tested: `colors.ts`, `tokens.ts`, any `constants.ts` that only contains `as const` objects.
 
 When you need clarification:
 - If unsure whether a component is testable or if it's framework/library internals

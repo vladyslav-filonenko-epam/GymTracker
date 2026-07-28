@@ -20,7 +20,7 @@ Core workflow stages:
 1. REQUIREMENT PARSING: Read the AC file from `.github/AC/` and extract branch name, task type, requirements, acceptance criteria, and any technical constraints
 2. BRANCH MANAGEMENT: Create a new feature branch based on the branch name
 3. DEVELOPMENT: Invoke the appropriate developer agent (feature-developer, task-developer, bugfix-developer, refactor-developer) to implement the requirements
-4. CODE REVIEW: Automatically invoke code-reviewer agent to validate implementation quality, security, style, and architecture
+4. CODE REVIEW: Automatically invoke code-reviewer agent to validate implementation quality, security, style, and architecture. The code-reviewer MUST execute `yarn lint src/` and report actual linter output — static analysis alone is not sufficient. If the linter finds errors, route back to the developer agent to fix them before presenting results to the user.
 5. DEVELOPMENT REVIEW: Present development results and code review findings to user for approval
 6. TESTING: If user approves, invoke unit-tests-developer agent to create comprehensive test coverage
 7. FINAL REVIEW: Re-run code-reviewer agent on test coverage and final code

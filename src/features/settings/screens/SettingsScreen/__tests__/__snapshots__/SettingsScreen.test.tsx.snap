@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`SettingsScreen should match the snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#0C0C0E",
+      "flex": 1,
+      "paddingHorizontal": 16,
+      "paddingTop": 16,
+    }
+  }
+>
+  <Text
+    style={
+      {
+        "color": "#F0F0F2",
+        "fontSize": 32,
+        "fontWeight": "700",
+        "letterSpacing": 1,
+        "marginBottom": 32,
+      }
+    }
+  >
+    SETTINGS
+  </Text>
+  <Text
+    style={
+      {
+        "color": "#888896",
+        "fontSize": 12,
+        "fontWeight": "600",
+        "letterSpacing": 2,
+        "marginBottom": 12,
+      }
+    }
+  >
+    PREFERENCES
+  </Text>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "borderBottomColor": "rgba(255, 255, 255, 0.08)",
+        "borderBottomWidth": 1,
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "paddingVertical": 12,
+      }
+    }
+  >
+    <Text
+      style={
+        {
+          "color": "#F0F0F2",
+          "fontSize": 16,
+          "fontWeight": "400",
+        }
+      }
+    >
+      Dark Mode
+    </Text>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#C8FF00",
+          "borderRadius": 9999,
+          "height": 24,
+          "justifyContent": "center",
+          "padding": 2,
+          "width": 44,
+        }
+      }
+      testID="theme-toggle"
+    >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderRadius": 9999,
+            "height": 20,
+            "transform": [
+              {
+                "translateX": 0,
+              },
+            ],
+            "width": 20,
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;

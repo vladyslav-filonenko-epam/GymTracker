@@ -127,8 +127,11 @@ module.exports = [
   // Test file overrides
   {
     files: ['**/*.test.ts', '**/*.test.tsx', '**/*.spec.ts', '**/*.spec.tsx'],
-    rules: {
-      '@typescript-eslint/no-explicit-any': 'off',
+    languageOptions: {
+      globals: {
+        ...globals.jest,
+        ...globals.node,
+      },
     },
   },
 ];

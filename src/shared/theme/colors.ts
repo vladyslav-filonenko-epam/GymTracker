@@ -1,28 +1,38 @@
-export const darkColors = {
+import type { Colors } from './types';
+
+export const darkColors: Colors = {
   background: {
-    primary: '#0D0D0D',
-    secondary: '#1A1A1A',
-    card: '#222222',
+    primary: '#0C0C0E',
+    secondary: '#1E1E22',
+    card: '#161618',
   },
-  surface: '#2C2C2C',
+  surface: '#2A2A2F',
   accent: {
-    primary: '#FF6B35',
-    secondary: '#FF8C42',
+    primary: '#C8FF00',
+    secondary: '#A8D900',
   },
   text: {
-    primary: '#FFFFFF',
-    secondary: '#A0A0A0',
-    muted: '#606060',
+    primary: '#F0F0F2',
+    secondary: '#888896',
+    muted: '#555560',
   },
-  border: '#333333',
+  border: 'rgba(255, 255, 255, 0.08)',
   status: {
     success: '#4CAF50',
-    error: '#F44336',
+    error: '#FF3B5C',
     warning: '#FF9800',
   },
-} as const;
+  overlay: {
+    subtle: 'rgba(255,255,255,0.06)',
+    border: 'rgba(255,255,255,0.2)',
+  },
+  static: {
+    white: '#FFFFFF',
+    black: '#000000',
+  },
+};
 
-export const lightColors = {
+export const lightColors: Colors = {
   background: {
     primary: '#F5F5F5',
     secondary: '#FFFFFF',
@@ -30,8 +40,8 @@ export const lightColors = {
   },
   surface: '#EFEFEF',
   accent: {
-    primary: '#FF6B35',
-    secondary: '#FF8C42',
+    primary: '#C8FF00',
+    secondary: '#A8D900',
   },
   text: {
     primary: '#0D0D0D',
@@ -41,15 +51,15 @@ export const lightColors = {
   border: '#E0E0E0',
   status: {
     success: '#4CAF50',
-    error: '#F44336',
+    error: '#FF3B5C',
     warning: '#FF9800',
   },
-} as const;
-
-export const navigationColors = {
-  tabBarActive: '#4E4EE2',
-  tabBarInactive: '#9999AA',
-  tabBarBorder: '#000000',
-  tabBarBackground: 'rgba(255, 255, 255, 0.75)',
-  tabBarShadow: '#000000',
-} as const;
+  overlay: {
+    subtle: 'rgba(0,0,0,0.04)',
+    border: 'rgba(0,0,0,0.15)',
+  },
+  static: {
+    white: '#FFFFFF',
+    black: '#000000',
+  },
+};

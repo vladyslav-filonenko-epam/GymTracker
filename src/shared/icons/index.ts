@@ -1,4 +1,3 @@
-export { default as AccountIcon } from './account.svg';
-export { default as CalendarIcon } from './calendar.svg';
-export { default as HomeIcon } from './home.svg';
-export { default as ListViewIcon } from './list-view.svg';
+export { default as DumbbellIcon } from './dumbbell.svg';
+export { default as ListChecksIcon } from './list-checks.svg';
+export { default as SettingsIcon } from './settings.svg';

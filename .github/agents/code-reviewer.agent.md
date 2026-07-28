@@ -17,11 +17,15 @@ Your core responsibilities:
 
 Review Methodology:
 1. **Identify all changed files**: Gather the complete list of created/modified files in the session
-2. **Static analysis**: Run linters (ESLint) and type checkers (TypeScript) on modified files
-3. **Code style check**: Verify Prettier formatting compliance
-4. **Logical review**: Examine code logic, error handling, and edge cases
-5. **Test verification**: Check that tests exist and follow project conventions
-6. **Best practices**: Verify compliance with project conventions, naming, documentation, and patterns
+2. **MANDATORY — Run linter**: Execute `yarn lint src/` in the project root. This MUST be run before any static analysis. If it fails, collect all errors and fix them with `yarn lint --fix src/` before proceeding. Report any remaining unfixable errors as Critical issues.
+3. **MANDATORY — Run type checker**: Execute `yarn tsc --noEmit` (if configured) or verify TypeScript via the lint run. Zero type errors required.
+4. **Static analysis**: Read changed files and reason about logic, patterns, and architecture.
+5. **Code style check**: Prettier violations are caught by `yarn lint` — do not re-check manually.
+6. **Logical review**: Examine code logic, error handling, and edge cases.
+7. **Test verification**: Check that tests exist and follow project conventions.
+8. **Best practices**: Verify compliance with project conventions, naming, documentation, and patterns.
+
+**CRITICAL RULE**: Never report "0 errors" or "code review passes" unless `yarn lint src/` has been executed and returned exit code 0. Static reading of files is NOT sufficient — always run the linter.
 
 Violation Categories (in severity order):
 - **Critical**: Security issues, type errors, logic bugs, failing tests
