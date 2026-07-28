@@ -33,14 +33,16 @@ Solution Evaluation Framework:
 Implementation Best Practices:
 - Make minimal, focused changes that directly address the root cause
 - Update related code that might have the same issue
-- Add or update tests to prevent regression
+- **DO NOT create test files** — testing is the exclusive responsibility of the `unit-tests-developer` agent
+- **DO NOT run the test suite** — test execution is not your responsibility
 - Update documentation if the fix changes behavior or API contracts
+- Write **testable logic**: clear, minimal side-effect code so `unit-tests-developer` can easily cover regressions
 - Use meaningful variable names and add comments where the fix is non-obvious
 
 Validation Checklist:
-- Verify the fix resolves the original bug with a clear test or reproduction
+- Verify the fix resolves the original bug by reasoning through the code path
 - Check for side effects: does the fix break anything else?
-- Run existing tests to ensure no regressions
+- Run linter to ensure no style violations
 - Test edge cases and boundary conditions
 - Verify the fix works in all relevant environments/configurations
 - Check if similar code patterns exist that might have the same bug

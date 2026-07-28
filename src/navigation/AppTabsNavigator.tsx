@@ -2,13 +2,13 @@ import React from 'react';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import type { NavigatorScreenParams } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 import { DumbbellIcon, ListChecksIcon, SettingsIcon } from 'src/shared/icons';
-import { useTheme } from 'src/shared/theme';
 
 import { ExercisesNavigator } from './ExercisesNavigator';
 import { SettingsNavigator } from './SettingsNavigator';
-import { createStyles } from './styles';
+import { useStyles } from './styles';
 import { WorkoutNavigator } from './WorkoutNavigator';
 
 type WorkoutStackParamList = { WorkoutList: undefined };
@@ -26,8 +26,8 @@ const Tab = createBottomTabNavigator<AppTabParamList>();
 const ICON_SIZE = 22;
 
 export const AppTabsNavigator = () => {
-  const { colors, spacing, radius } = useTheme();
-  const styles = createStyles(colors, spacing, radius);
+  const { t } = useTranslation();
+  const { styles, colors } = useStyles();
 
   return (
     <Tab.Navigator
@@ -43,7 +43,7 @@ export const AppTabsNavigator = () => {
         name="WorkoutTab"
         component={WorkoutNavigator}
         options={{
-          tabBarLabel: 'Workouts',
+          tabBarLabel: t('navigation.workoutsTab'),
           tabBarIcon: ({ color }) => (
             <DumbbellIcon width={ICON_SIZE} height={ICON_SIZE} color={color} />
           ),
@@ -54,7 +54,7 @@ export const AppTabsNavigator = () => {
         name="ExercisesTab"
         component={ExercisesNavigator}
         options={{
-          tabBarLabel: 'Exercises',
+          tabBarLabel: t('navigation.exercisesTab'),
           tabBarIcon: ({ color }) => (
             <ListChecksIcon width={ICON_SIZE} height={ICON_SIZE} color={color} />
           ),
@@ -65,7 +65,7 @@ export const AppTabsNavigator = () => {
         name="SettingsTab"
         component={SettingsNavigator}
         options={{
-          tabBarLabel: 'Settings',
+          tabBarLabel: t('navigation.settingsTab'),
           tabBarIcon: ({ color }) => (
             <SettingsIcon width={ICON_SIZE} height={ICON_SIZE} color={color} />
           ),

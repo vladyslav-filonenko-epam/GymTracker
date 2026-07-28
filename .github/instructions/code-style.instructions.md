@@ -50,8 +50,7 @@ interface WorkoutCardProps {
 }
 
 export const WorkoutCard = ({ workout, onPress }: WorkoutCardProps) => {
-  const { colors, spacing, radius } = useTheme();
-  const styles = createStyles(colors, spacing, radius);
+  const { styles, colors } = useStyles(); // imported from './styles'
   // handlers...
   return ( ... );
 };
@@ -59,17 +58,15 @@ export const WorkoutCard = ({ workout, onPress }: WorkoutCardProps) => {
 
 **`styles.ts`** — all styles, theme-aware factory:
 ```ts
-import { StyleSheet } from 'react-native';
-import type { Colors, Spacing, Radius } from 'src/shared/theme/types';
+import { createStyles } from 'src/shared/utils';
 
-export const createStyles = (colors: Colors, spacing: Spacing, radius: Radius) =>
-  StyleSheet.create({
-    container: {
-      backgroundColor: colors.background.card,
-      borderRadius: radius.lg,
-      padding: spacing.lg,
-    },
-  });
+export const useStyles = createStyles(({ colors, spacing, radius }) => ({
+  container: {
+    backgroundColor: colors.background.card,
+    borderRadius: radius.lg,
+    padding: spacing.lg,
+  },
+}));
 ```
 
 **`index.ts`** — re-export only (always `.ts` extension, never `.tsx`):

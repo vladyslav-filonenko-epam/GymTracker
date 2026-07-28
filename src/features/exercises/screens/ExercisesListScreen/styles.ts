@@ -1,9 +1,7 @@
-import { StyleSheet } from 'react-native';
+import { createStyles } from 'src/shared/utils';
 
-import type { Colors, Radius, Spacing } from 'src/shared/theme/types';
-
-export const createStyles = (colors: Colors, spacing: Spacing, _radius: Radius, topInset: number) =>
-  StyleSheet.create({
+export const useStyles = createStyles(
+  ({ colors, spacing, typography }, { topInset }: { topInset: number }) => ({
     container: {
       flex: 1,
       backgroundColor: colors.background.primary,
@@ -11,19 +9,20 @@ export const createStyles = (colors: Colors, spacing: Spacing, _radius: Radius, 
       paddingTop: spacing.lg + topInset,
     },
     header: {
+      ...typography.heading.xl,
       color: colors.text.primary,
-      fontSize: 32,
-      fontWeight: '700',
       letterSpacing: 1,
       marginBottom: spacing.xxxl,
+      textTransform: 'uppercase' as const,
     },
     emptyContainer: {
       flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
+      alignItems: 'center' as const,
+      justifyContent: 'center' as const,
     },
     emptyText: {
+      ...typography.body.md,
       color: colors.text.muted,
-      fontSize: 16,
     },
-  });
+  }),
+);

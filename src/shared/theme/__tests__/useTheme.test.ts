@@ -4,7 +4,7 @@ import { renderHook } from '@testing-library/react-native';
 
 import { darkColors } from '../colors';
 import { ThemeContext } from '../ThemeProvider';
-import { radius, spacing } from '../tokens';
+import { radius, spacing, typography } from '../tokens';
 import { useTheme } from '../useTheme';
 
 describe('useTheme', () => {
@@ -29,6 +29,7 @@ describe('useTheme', () => {
       colors: darkColors,
       spacing,
       radius,
+      typography,
       theme: 'light' as const,
       setTheme: customSetTheme,
     };

@@ -3,13 +3,14 @@ import React, { createContext, useState } from 'react';
 import { storage } from 'src/shared/utils/storage';
 
 import { darkColors, lightColors } from './colors';
-import { radius, spacing } from './tokens';
+import { radius, spacing, typography } from './tokens';
 import type { Theme } from './types';
 
 const defaultTheme: Theme = {
   colors: darkColors,
   spacing,
   radius,
+  typography,
   theme: 'dark',
   setTheme: () => undefined,
 };
@@ -36,6 +37,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     colors: currentTheme === 'dark' ? darkColors : lightColors,
     spacing,
     radius,
+    typography,
     theme: currentTheme,
     setTheme,
   };

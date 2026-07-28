@@ -37,10 +37,11 @@ exports[`PincodeScreen should match the snapshot 1`] = `
             "fontWeight": "700",
             "letterSpacing": 4,
             "marginLeft": 8,
+            "textTransform": "uppercase",
           }
         }
       >
-        GYMTRACKER
+        GymTracker
       </Text>
     </View>
     <Text
@@ -51,26 +52,57 @@ exports[`PincodeScreen should match the snapshot 1`] = `
           "fontWeight": "600",
           "letterSpacing": 3,
           "marginTop": 4,
+          "textTransform": "uppercase",
         }
       }
     >
-      CREATE PINCODE
+      Create pincode
     </Text>
   </View>
   <View
     collapsable={false}
-    style={
+    jestAnimatedProps={
       {
-        "flexDirection": "row",
-        "gap": 12,
-        "justifyContent": "center",
-        "marginBottom": 48,
-        "transform": [
-          {
-            "translateX": 0,
-          },
-        ],
+        "value": {},
       }
+    }
+    jestAnimatedStyle={
+      {
+        "value": {
+          "transform": [
+            {
+              "translateX": 0,
+            },
+          ],
+        },
+      }
+    }
+    jestInlineStyle={
+      [
+        {
+          "flexDirection": "row",
+          "gap": 12,
+          "justifyContent": "center",
+          "marginBottom": 48,
+        },
+      ]
+    }
+    style={
+      [
+        {
+          "flexDirection": "row",
+          "gap": 12,
+          "justifyContent": "center",
+          "marginBottom": 48,
+        },
+        {
+          "transform": [
+            {
+              "translateX": 0,
+            },
+          ],
+        },
+      ]
     }
   >
     <View
@@ -89,18 +121,48 @@ exports[`PincodeScreen should match the snapshot 1`] = `
     >
       <View
         collapsable={false}
-        style={
+        jestAnimatedProps={
           {
-            "backgroundColor": "#C8FF00",
-            "borderRadius": 9999,
-            "flex": 1,
-            "opacity": 0,
-            "transform": [
-              {
-                "scale": 0.6,
-              },
-            ],
+            "value": {},
           }
+        }
+        jestAnimatedStyle={
+          {
+            "value": {
+              "opacity": 0,
+              "transform": [
+                {
+                  "scale": 0.6,
+                },
+              ],
+            },
+          }
+        }
+        jestInlineStyle={
+          [
+            {
+              "backgroundColor": "#C8FF00",
+              "borderRadius": 9999,
+              "flex": 1,
+            },
+          ]
+        }
+        style={
+          [
+            {
+              "backgroundColor": "#C8FF00",
+              "borderRadius": 9999,
+              "flex": 1,
+            },
+            {
+              "opacity": 0,
+              "transform": [
+                {
+                  "scale": 0.6,
+                },
+              ],
+            },
+          ]
         }
       />
     </View>
@@ -120,18 +182,48 @@ exports[`PincodeScreen should match the snapshot 1`] = `
     >
       <View
         collapsable={false}
-        style={
+        jestAnimatedProps={
           {
-            "backgroundColor": "#C8FF00",
-            "borderRadius": 9999,
-            "flex": 1,
-            "opacity": 0,
-            "transform": [
-              {
-                "scale": 0.6,
-              },
-            ],
+            "value": {},
           }
+        }
+        jestAnimatedStyle={
+          {
+            "value": {
+              "opacity": 0,
+              "transform": [
+                {
+                  "scale": 0.6,
+                },
+              ],
+            },
+          }
+        }
+        jestInlineStyle={
+          [
+            {
+              "backgroundColor": "#C8FF00",
+              "borderRadius": 9999,
+              "flex": 1,
+            },
+          ]
+        }
+        style={
+          [
+            {
+              "backgroundColor": "#C8FF00",
+              "borderRadius": 9999,
+              "flex": 1,
+            },
+            {
+              "opacity": 0,
+              "transform": [
+                {
+                  "scale": 0.6,
+                },
+              ],
+            },
+          ]
         }
       />
     </View>
@@ -151,18 +243,48 @@ exports[`PincodeScreen should match the snapshot 1`] = `
     >
       <View
         collapsable={false}
-        style={
+        jestAnimatedProps={
           {
-            "backgroundColor": "#C8FF00",
-            "borderRadius": 9999,
-            "flex": 1,
-            "opacity": 0,
-            "transform": [
-              {
-                "scale": 0.6,
-              },
-            ],
+            "value": {},
           }
+        }
+        jestAnimatedStyle={
+          {
+            "value": {
+              "opacity": 0,
+              "transform": [
+                {
+                  "scale": 0.6,
+                },
+              ],
+            },
+          }
+        }
+        jestInlineStyle={
+          [
+            {
+              "backgroundColor": "#C8FF00",
+              "borderRadius": 9999,
+              "flex": 1,
+            },
+          ]
+        }
+        style={
+          [
+            {
+              "backgroundColor": "#C8FF00",
+              "borderRadius": 9999,
+              "flex": 1,
+            },
+            {
+              "opacity": 0,
+              "transform": [
+                {
+                  "scale": 0.6,
+                },
+              ],
+            },
+          ]
         }
       />
     </View>
@@ -182,18 +304,48 @@ exports[`PincodeScreen should match the snapshot 1`] = `
     >
       <View
         collapsable={false}
-        style={
+        jestAnimatedProps={
           {
-            "backgroundColor": "#C8FF00",
-            "borderRadius": 9999,
-            "flex": 1,
-            "opacity": 0,
-            "transform": [
-              {
-                "scale": 0.6,
-              },
-            ],
+            "value": {},
           }
+        }
+        jestAnimatedStyle={
+          {
+            "value": {
+              "opacity": 0,
+              "transform": [
+                {
+                  "scale": 0.6,
+                },
+              ],
+            },
+          }
+        }
+        jestInlineStyle={
+          [
+            {
+              "backgroundColor": "#C8FF00",
+              "borderRadius": 9999,
+              "flex": 1,
+            },
+          ]
+        }
+        style={
+          [
+            {
+              "backgroundColor": "#C8FF00",
+              "borderRadius": 9999,
+              "flex": 1,
+            },
+            {
+              "opacity": 0,
+              "transform": [
+                {
+                  "scale": 0.6,
+                },
+              ],
+            },
+          ]
         }
       />
     </View>
@@ -833,6 +985,7 @@ exports[`PincodeScreen should match the snapshot 1`] = `
             {
               "color": "#F0F0F2",
               "fontSize": 24,
+              "fontWeight": "600",
             }
           }
         >

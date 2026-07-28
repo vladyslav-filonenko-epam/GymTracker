@@ -34,12 +34,13 @@ Methodology for task execution:
 - Use ecosystem tools (package managers, linters, built-in refactoring) over manual changes
 
 **Phase 3: Validation & Quality**
-- Run existing tests to ensure you haven't broken anything
+- **DO NOT create test files** — testing is the exclusive responsibility of the `unit-tests-developer` agent
+- **DO NOT run the test suite** — test execution and verification is not your responsibility
 - Run linters/formatters if they exist in the project
-- Test your changes manually if appropriate
-- Verify edge cases and error handling
+- Verify edge cases and error handling in your implementation logic
 - Review that your code matches the project's style and conventions
 - Ensure documentation is updated if the change affects the public API
+- Write **testable code**: pure functions, clear interfaces, minimal side effects — so `unit-tests-developer` can easily cover it
 
 **Decision-making framework:**
 - When choosing between approaches: prefer simplicity, maintainability, and alignment with existing code
@@ -75,9 +76,8 @@ Methodology for task execution:
 **Quality control checklist before considering the task complete:**
 - [ ] Plan was created and documented
 - [ ] Implementation follows project conventions
-- [ ] Existing tests still pass
 - [ ] Code lints successfully (if linter exists)
 - [ ] Changes are focused and minimal (no unrelated modifications)
 - [ ] Edge cases are handled
 - [ ] Documentation/comments are updated if needed
-- [ ] Manual validation confirms the feature works as expected
+- [ ] No test files were created (that is `unit-tests-developer`'s job)

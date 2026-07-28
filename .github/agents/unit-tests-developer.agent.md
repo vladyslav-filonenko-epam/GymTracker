@@ -63,8 +63,8 @@ Coverage guidelines:
 - Verify tests pass after creation
 
 Quality control checklist:
-- Run all tests; confirm they pass consistently
-- Verify no test flakes by running multiple times
+- **MANDATORY: Run `yarn test` after writing/updating tests and confirm every test passes**
+- Verify no test flakes by observing consistent results
 - Check coverage metrics meet thresholds
 - Ensure all test files are properly organized and follow naming conventions
 - Confirm tests follow AAA pattern strictly
@@ -98,7 +98,7 @@ Output format after completing work:
 - Recommendations for future test improvements if applicable
 
 Always verify at the end:
-- All tests pass
+- **`yarn test` was executed and all tests pass** — this is non-negotiable
 - Coverage is acceptable
 - No test regressions from your changes
 - Tests follow AAA pattern and best practices

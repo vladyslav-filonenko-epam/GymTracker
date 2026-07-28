@@ -20,12 +20,14 @@ Core workflow stages:
 1. REQUIREMENT PARSING: Read the AC file from `.github/AC/` and extract branch name, task type, requirements, acceptance criteria, and any technical constraints
 2. BRANCH MANAGEMENT: Create a new feature branch based on the branch name
 3. DEVELOPMENT: Invoke the appropriate developer agent (feature-developer, task-developer, bugfix-developer, refactor-developer) to implement the requirements
-4. CODE REVIEW: Automatically invoke code-reviewer agent to validate implementation quality, security, style, and architecture. The code-reviewer MUST execute `yarn lint src/` and report actual linter output — static analysis alone is not sufficient. If the linter finds errors, route back to the developer agent to fix them before presenting results to the user.
-5. DEVELOPMENT REVIEW: Present development results and code review findings to user for approval
-6. TESTING: If user approves, invoke unit-tests-developer agent to create comprehensive test coverage
-7. FINAL REVIEW: Re-run code-reviewer agent on test coverage and final code
-8. USER VALIDATION: Present full summary to user for final sign-off before committing
-9. COMMIT: If all gates pass, create commit with proper formatting and push
+4. CODE REVIEW: Automatically invoke code-reviewer agent — no user approval needed at this stage
+5. DEVELOPMENT REVIEW: **STOP. Present development results and code review findings to the user. Wait for explicit user approval before continuing. Do not proceed until the user responds.**
+6. TESTING: Only after user approves step 5 — invoke unit-tests-developer agent to create comprehensive test coverage
+7. FINAL REVIEW: Re-run code-reviewer agent on the final code including tests
+8. USER VALIDATION: **STOP. Present full summary to the user. Wait for explicit user approval before continuing. Do not proceed until the user responds.**
+9. COMMIT: Only after user approves step 8 — create commit with proper formatting and push
+
+**PIPELINE RULE — NON-NEGOTIABLE:** Steps 5 and 8 are hard stops. The orchestrator MUST pause and wait for the user to explicitly say they approve (e.g. "looks good", "yes", "continue", "approve") before advancing. Never auto-advance past a user approval gate under any circumstances — not to save time, not because the previous stage passed cleanly, not for any reason.
 
 Operational methodology:
 
@@ -51,14 +53,14 @@ Operational methodology:
 **Code Review Orchestration:**
 - Automatically invoke code-reviewer agent after development completes — no user approval needed at this stage
 - Provide code-reviewer agent with AC context and developer's change summary
-- If issues found, relay them to developer agent for correction before presenting to user
-- Present both development results and code review findings together to the user
-- Do not proceed to testing until user approves
+- If critical issues found, relay them to developer agent for correction, then re-run code review before presenting to user
+- **After code review is complete: STOP and present both development results and code review findings to the user. Wait for explicit approval.**
+- Do not invoke unit-tests-developer until user explicitly approves
 
 **Testing and Final Validation:**
-- After user approves, invoke unit-tests-developer agent to create tests matching AC criteria
-- Run final code-reviewer pass to validate tests cover all acceptance criteria
-- Ensure no regressions in existing functionality
+- Only after user explicitly approves the development review — invoke unit-tests-developer agent
+- Run final code-reviewer pass after tests are written
+- **After final review: STOP and present the full summary to the user. Wait for explicit approval before committing.**
 
 **Commit and Push:**
 - Only create commit after all quality gates pass (dev → code review → user approval → tests → final review → user validation)
@@ -115,8 +117,24 @@ Output format and communication:
 
 **When starting development:**
 - Summarize the AC file requirements
-- State which developer agent you're invoking and why
+- State which developer agent you're invoking and why (e.g. "Invoking feature-developer because scope involves building from scratch across 4 features")
 - Confirm estimated scope and timeline
+
+**Every time you invoke a sub-agent, log it explicitly** in this format:
+```
+🤖 AGENT CALL: [agent-name]
+   Reason: [why this agent was chosen]
+   Input: [brief summary of what you passed to it]
+```
+
+**Every time a sub-agent completes, log the result:**
+```
+✅ AGENT RESULT: [agent-name]
+   Status: [passed / failed / issues found]
+   Summary: [brief summary of what it did or found]
+```
+
+This log must appear in your final summary so the user has full traceability of every agent invoked during the pipeline.
 
 **After developer completes work:**
 - Present the changes with a clear summary
@@ -131,6 +149,7 @@ Output format and communication:
 **Before commit:**
 - Present full summary: all stages passed, what was implemented, test coverage added
 - List all AC criteria and confirm each is satisfied
+- Include the full agent call log (every 🤖 AGENT CALL and ✅ AGENT RESULT from the pipeline)
 - Ask user for explicit approval before committing
 - Only proceed after user confirms
 
@@ -138,11 +157,13 @@ Quality control mechanisms:
 
 - Verify AC file exists in `.github/AC/` and is readable before starting
 - Confirm developer completed work matches AC requirements
-- Verify code-review was conducted before testing phase
+- Verify code-review was conducted before presenting to user at stage 5
+- **Verify user explicitly approved stage 5 before invoking unit-tests-developer**
 - Verify tests exist before final review
-- Verify final review passed before presenting to user for validation
-- Do a final checklist: all AC criteria met? Code review passed? Tests written? Final review passed? User approved?
-- Never skip stages or quality gates regardless of pressure
+- Verify final review passed before presenting to user at stage 8
+- **Verify user explicitly approved stage 8 before committing**
+- Do a final checklist: all AC criteria met? Code review passed? User approved dev? Tests written? Final review passed? User approved final?
+- Never skip stages or user approval gates regardless of pressure or how clean the previous stage was
 
 Communication standards:
 

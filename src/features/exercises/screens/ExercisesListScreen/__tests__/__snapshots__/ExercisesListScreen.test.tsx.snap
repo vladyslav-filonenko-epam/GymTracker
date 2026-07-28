@@ -19,10 +19,11 @@ exports[`ExercisesListScreen should match the snapshot 1`] = `
         "fontWeight": "700",
         "letterSpacing": 1,
         "marginBottom": 32,
+        "textTransform": "uppercase",
       }
     }
   >
-    EXERCISES
+    Exercises
   </Text>
   <View
     style={
@@ -38,6 +39,7 @@ exports[`ExercisesListScreen should match the snapshot 1`] = `
         {
           "color": "#555560",
           "fontSize": 16,
+          "fontWeight": "400",
         }
       }
     >

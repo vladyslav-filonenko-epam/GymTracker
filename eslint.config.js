@@ -115,11 +115,15 @@ module.exports = [
         { blankLine: 'any', prev: ['const', 'let', 'var'], next: ['const', 'let', 'var'] },
       ],
 
-      // TS
+      // TS — disable base JS rules that have TS-aware replacements
+      'no-unused-vars': 'off',
+      'no-unused-expressions': 'off',
+
       '@typescript-eslint/no-unused-vars': [
         'error',
         { ignoreRestSiblings: true, argsIgnorePattern: '^_' },
       ],
+      '@typescript-eslint/no-unused-expressions': 'error',
       '@typescript-eslint/ban-ts-comment': ['warn', { 'ts-ignore': 'allow-with-description' }],
     },
   },
