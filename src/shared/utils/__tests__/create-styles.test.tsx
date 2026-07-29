@@ -7,28 +7,13 @@ import { ThemeContext } from 'src/shared/theme/ThemeProvider';
 import { radius, spacing, typography } from 'src/shared/theme/tokens';
 import type { Theme, Typography } from 'src/shared/theme/types';
 
-import { createStyles } from '../create-styles';
+import { createStyles, enrichTypography } from '../create-styles';
 import type { ThemeProps } from '../create-styles';
 
-const addColor = (color: string): Typography => ({
-  heading: {
-    xl: { ...typography.heading.xl, color },
-    lg: { ...typography.heading.lg, color },
-    md: { ...typography.heading.md, color },
-    sm: { ...typography.heading.sm, color },
-  },
-  body: {
-    lg: { ...typography.body.lg, color },
-    md: { ...typography.body.md, color },
-    sm: { ...typography.body.sm, color },
-  },
-  caption: { ...typography.caption, color },
-  label: { ...typography.label, color },
-  display: {
-    sm: { ...typography.display.sm, color },
-    md: { ...typography.display.md, color },
-  },
-});
+const darkTypography = enrichTypography(
+  typography as unknown as Record<string, unknown>,
+  darkColors.text.primary,
+) as unknown as Typography;
 
 const buildThemeValue = (theme: 'dark' | 'light'): Theme => ({
   colors: theme === 'dark' ? darkColors : lightColors,
@@ -70,7 +55,7 @@ describe('createStyles', () => {
         colors: darkColors,
         spacing,
         radius,
-        typography: addColor(darkColors.text.primary),
+        typography: darkTypography,
         isDark: true,
       },
       {},
@@ -92,7 +77,7 @@ describe('createStyles', () => {
       backgroundColor: darkColors.background.primary,
     });
     expect(result.current.colors).toEqual(darkColors);
-    expect(result.current.typography).toEqual(addColor(darkColors.text.primary));
+    expect(result.current.typography).toEqual(darkTypography);
     expect(result.current.isDark).toBe(true);
   });
 

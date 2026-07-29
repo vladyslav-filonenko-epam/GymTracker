@@ -60,33 +60,6 @@ exports[`PincodeScreen should match the snapshot 1`] = `
     </Text>
   </View>
   <View
-    collapsable={false}
-    jestAnimatedProps={
-      {
-        "value": {},
-      }
-    }
-    jestAnimatedStyle={
-      {
-        "value": {
-          "transform": [
-            {
-              "translateX": 0,
-            },
-          ],
-        },
-      }
-    }
-    jestInlineStyle={
-      [
-        {
-          "flexDirection": "row",
-          "gap": 12,
-          "justifyContent": "center",
-          "marginBottom": 48,
-        },
-      ]
-    }
     style={
       [
         {
@@ -109,246 +82,66 @@ exports[`PincodeScreen should match the snapshot 1`] = `
       style={
         [
           {
-            "borderColor": "rgba(255,255,255,0.2)",
             "borderRadius": 9999,
             "borderWidth": 2,
             "height": 16,
             "width": 16,
           },
-          false,
+          {
+            "backgroundColor": undefined,
+            "borderColor": undefined,
+          },
         ]
       }
-    >
-      <View
-        collapsable={false}
-        jestAnimatedProps={
-          {
-            "value": {},
-          }
-        }
-        jestAnimatedStyle={
-          {
-            "value": {
-              "opacity": 0,
-              "transform": [
-                {
-                  "scale": 0.6,
-                },
-              ],
-            },
-          }
-        }
-        jestInlineStyle={
-          [
-            {
-              "backgroundColor": "#C8FF00",
-              "borderRadius": 9999,
-              "flex": 1,
-            },
-          ]
-        }
-        style={
-          [
-            {
-              "backgroundColor": "#C8FF00",
-              "borderRadius": 9999,
-              "flex": 1,
-            },
-            {
-              "opacity": 0,
-              "transform": [
-                {
-                  "scale": 0.6,
-                },
-              ],
-            },
-          ]
-        }
-      />
-    </View>
+    />
     <View
       style={
         [
           {
-            "borderColor": "rgba(255,255,255,0.2)",
             "borderRadius": 9999,
             "borderWidth": 2,
             "height": 16,
             "width": 16,
           },
-          false,
+          {
+            "backgroundColor": undefined,
+            "borderColor": undefined,
+          },
         ]
       }
-    >
-      <View
-        collapsable={false}
-        jestAnimatedProps={
-          {
-            "value": {},
-          }
-        }
-        jestAnimatedStyle={
-          {
-            "value": {
-              "opacity": 0,
-              "transform": [
-                {
-                  "scale": 0.6,
-                },
-              ],
-            },
-          }
-        }
-        jestInlineStyle={
-          [
-            {
-              "backgroundColor": "#C8FF00",
-              "borderRadius": 9999,
-              "flex": 1,
-            },
-          ]
-        }
-        style={
-          [
-            {
-              "backgroundColor": "#C8FF00",
-              "borderRadius": 9999,
-              "flex": 1,
-            },
-            {
-              "opacity": 0,
-              "transform": [
-                {
-                  "scale": 0.6,
-                },
-              ],
-            },
-          ]
-        }
-      />
-    </View>
+    />
     <View
       style={
         [
           {
-            "borderColor": "rgba(255,255,255,0.2)",
             "borderRadius": 9999,
             "borderWidth": 2,
             "height": 16,
             "width": 16,
           },
-          false,
+          {
+            "backgroundColor": undefined,
+            "borderColor": undefined,
+          },
         ]
       }
-    >
-      <View
-        collapsable={false}
-        jestAnimatedProps={
-          {
-            "value": {},
-          }
-        }
-        jestAnimatedStyle={
-          {
-            "value": {
-              "opacity": 0,
-              "transform": [
-                {
-                  "scale": 0.6,
-                },
-              ],
-            },
-          }
-        }
-        jestInlineStyle={
-          [
-            {
-              "backgroundColor": "#C8FF00",
-              "borderRadius": 9999,
-              "flex": 1,
-            },
-          ]
-        }
-        style={
-          [
-            {
-              "backgroundColor": "#C8FF00",
-              "borderRadius": 9999,
-              "flex": 1,
-            },
-            {
-              "opacity": 0,
-              "transform": [
-                {
-                  "scale": 0.6,
-                },
-              ],
-            },
-          ]
-        }
-      />
-    </View>
+    />
     <View
       style={
         [
           {
-            "borderColor": "rgba(255,255,255,0.2)",
             "borderRadius": 9999,
             "borderWidth": 2,
             "height": 16,
             "width": 16,
           },
-          false,
+          {
+            "backgroundColor": undefined,
+            "borderColor": undefined,
+          },
         ]
       }
-    >
-      <View
-        collapsable={false}
-        jestAnimatedProps={
-          {
-            "value": {},
-          }
-        }
-        jestAnimatedStyle={
-          {
-            "value": {
-              "opacity": 0,
-              "transform": [
-                {
-                  "scale": 0.6,
-                },
-              ],
-            },
-          }
-        }
-        jestInlineStyle={
-          [
-            {
-              "backgroundColor": "#C8FF00",
-              "borderRadius": 9999,
-              "flex": 1,
-            },
-          ]
-        }
-        style={
-          [
-            {
-              "backgroundColor": "#C8FF00",
-              "borderRadius": 9999,
-              "flex": 1,
-            },
-            {
-              "opacity": 0,
-              "transform": [
-                {
-                  "scale": 0.6,
-                },
-              ],
-            },
-          ]
-        }
-      />
-    </View>
+    />
   </View>
   <View
     style={

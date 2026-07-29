@@ -66,7 +66,7 @@ Operational methodology:
 - Only create commit after all quality gates pass (dev → code review → user approval → tests → final review → user validation)
 - Use clear commit message referencing the AC
 - Include proper formatting and co-authored-by trailer
-- Push to repository
+- Always push with `git push -u origin <branch>` — the `-u` flag sets the upstream tracking so the branch is linked to the remote
 
 Decision-making framework:
 

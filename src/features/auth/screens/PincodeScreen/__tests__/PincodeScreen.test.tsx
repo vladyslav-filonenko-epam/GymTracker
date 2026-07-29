@@ -6,6 +6,24 @@ import 'src/shared/localization';
 
 import { PincodeScreen } from '../PincodeScreen';
 
+// Override withTiming to immediately invoke its callback so animation-gated
+// logic (e.g. handlePinComplete triggered after last dot fills) works in tests.
+jest.mock('react-native-reanimated', () => {
+  const reanimated = jest.requireActual<Record<string, unknown>>('react-native-reanimated/mock');
+
+  return {
+    ...reanimated,
+    withTiming: (toValue: number, _config?: unknown, callback?: (finished: boolean) => void) => {
+      callback?.(true);
+      return toValue;
+    },
+  };
+});
+
+jest.mock('react-native-worklets', () => ({
+  scheduleOnRN: (fn: (...args: unknown[]) => unknown, ...args: unknown[]) => fn(...args),
+}));
+
 const mockNavigate = jest.fn();
 
 jest.mock('@react-navigation/native', () => ({

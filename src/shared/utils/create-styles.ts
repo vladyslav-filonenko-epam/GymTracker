@@ -9,7 +9,10 @@ import type { Colors, Radius, Spacing, Typography, TypographyToken } from 'src/s
 const isToken = (v: unknown): v is TypographyToken =>
   typeof v === 'object' && v !== null && 'fontSize' in v;
 
-const enrichTypography = (obj: Record<string, unknown>, color: string): Record<string, unknown> =>
+export const enrichTypography = (
+  obj: Record<string, unknown>,
+  color: string,
+): Record<string, unknown> =>
   Object.fromEntries(
     Object.entries(obj).map(([k, v]) => [
       k,

@@ -26,7 +26,6 @@ export const SettingsScreen = () => {
   const handleToggle = () => {
     const newTheme = isDark ? 'light' : 'dark';
 
-    // eslint-disable-next-line react-hooks/immutability -- Reanimated shared values must be mutated via `.value`.
     thumbOffset.value = withTiming(newTheme === 'dark' ? 0 : 20, { duration: 200 });
     setTheme(newTheme);
   };

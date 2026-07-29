@@ -42,16 +42,6 @@ export const useStyles = createStyles(({ colors, spacing, radius, typography }) 
     height: 16,
     borderRadius: radius.full,
     borderWidth: 2,
-    borderColor: colors.overlay.border,
-  },
-  dotInner: {
-    flex: 1,
-    borderRadius: radius.full,
-    backgroundColor: colors.accent.primary,
-  },
-  dotFilled: {
-    backgroundColor: colors.accent.primary,
-    borderColor: colors.accent.primary,
   },
   numpad: {
     width: '100%' as const,
