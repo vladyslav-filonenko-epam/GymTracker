@@ -13,8 +13,30 @@ applyTo: "src/**/*.ts, src/**/*.tsx"
 | Domain types used within 1 feature | `src/features/<name>/types.ts` |
 | Domain types used across 2+ features | `src/shared/types/<file-name>.ts` |
 | DB-derived types | Inferred from Drizzle schema via `$inferSelect` / `$inferInsert` |
+| Third-party module augmentation | `declarations.d.ts` in the relevant feature/module folder |
 
 **Key rule:** if a type *describes a component's API* (props, variants, enums), it lives with the component — not in `src/shared/types/`. Promote to `src/shared/types/` only for domain types that are independent of any component.
+
+## Declaration Files (`declarations.d.ts`)
+
+When you need to augment an external module (e.g. `declare module 'i18next' { ... }`), create a `declarations.d.ts` file — **not** `types.ts`:
+
+```ts
+// src/shared/localization/declarations.d.ts
+import type { en } from './locales/en';
+
+declare module 'i18next' {
+  interface CustomTypeOptions {
+    defaultNS: 'translation';
+    resources: { translation: typeof en };
+  }
+}
+```
+
+**Why `.d.ts` not `.ts`:**
+- TypeScript automatically includes `.d.ts` files matched by `tsconfig.json`'s `include` glob — no explicit `import './declarations'` needed anywhere
+- `types.ts` is for domain type exports that are imported by consumers; `declarations.d.ts` is for ambient augmentations that TypeScript picks up globally
+- Always use `import type` inside `.d.ts` files — value imports are not allowed
 
 ## Naming Conventions
 - `interface` for object shapes: `WorkoutCardProps`, `Workout`, `Exercise`

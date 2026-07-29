@@ -2,7 +2,27 @@ import React from 'react';
 
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 
+import 'src/shared/localization';
+
 import { PincodeScreen } from '../PincodeScreen';
+
+// Override withTiming to immediately invoke its callback so animation-gated
+// logic (e.g. handlePinComplete triggered after last dot fills) works in tests.
+jest.mock('react-native-reanimated', () => {
+  const reanimated = jest.requireActual<Record<string, unknown>>('react-native-reanimated/mock');
+
+  return {
+    ...reanimated,
+    withTiming: (toValue: number, _config?: unknown, callback?: (finished: boolean) => void) => {
+      callback?.(true);
+      return toValue;
+    },
+  };
+});
+
+jest.mock('react-native-worklets', () => ({
+  scheduleOnRN: (fn: (...args: unknown[]) => unknown, ...args: unknown[]) => fn(...args),
+}));
 
 const mockNavigate = jest.fn();
 
@@ -14,25 +34,6 @@ jest.mock('@react-navigation/native', () => ({
 
 jest.mock('zustand/react/shallow', () => ({
   useShallow: (fn: (state: unknown) => unknown) => fn,
-}));
-
-jest.mock('src/shared/theme', () => ({
-  useTheme: () => ({
-    colors: {
-      background: { primary: '#0C0C0E', secondary: '#1E1E22', card: '#161618' },
-      surface: '#2A2A2F',
-      accent: { primary: '#C8FF00', secondary: '#A8D900' },
-      text: { primary: '#F0F0F2', secondary: '#888896', muted: '#555560' },
-      border: 'rgba(255, 255, 255, 0.08)',
-      status: { success: '#4CAF50', error: '#FF3B5C', warning: '#FF9800' },
-      overlay: { subtle: 'rgba(255,255,255,0.06)', border: 'rgba(255,255,255,0.2)' },
-      static: { white: '#FFFFFF', black: '#000000' },
-    },
-    spacing: { xs: 4, sm: 8, md: 12, lg: 16, xl: 20, xxl: 24, xxxl: 32, huge: 48, giant: 64 },
-    radius: { sm: 4, md: 8, lg: 12, xl: 16, full: 9999 },
-    theme: 'dark',
-    setTheme: jest.fn(),
-  }),
 }));
 
 const mockInitAuth = jest.fn().mockResolvedValue(undefined);
@@ -62,7 +63,7 @@ describe('PincodeScreen', () => {
     mockVerifyPin.mockResolvedValue(true);
   });
 
-  it('should render the "CREATE PINCODE" subtitle when authStep is "create"', () => {
+  it('should render the "Create pincode" subtitle when authStep is "create"', () => {
     // Arrange
     mockAuthStepState = 'create';
 
@@ -70,11 +71,11 @@ describe('PincodeScreen', () => {
     render(<PincodeScreen />);
 
     // Assert
-    expect(screen.getByText('CREATE PINCODE')).toBeTruthy();
-    expect(screen.getByText('GYMTRACKER')).toBeTruthy();
+    expect(screen.getByText('Create pincode')).toBeTruthy();
+    expect(screen.getByText('GymTracker')).toBeTruthy();
   });
 
-  it('should render the "CONFIRM PINCODE" subtitle when authStep is "confirm"', () => {
+  it('should render the "Confirm pincode" subtitle when authStep is "confirm"', () => {
     // Arrange
     mockAuthStepState = 'confirm';
 
@@ -82,10 +83,10 @@ describe('PincodeScreen', () => {
     render(<PincodeScreen />);
 
     // Assert
-    expect(screen.getByText('CONFIRM PINCODE')).toBeTruthy();
+    expect(screen.getByText('Confirm pincode')).toBeTruthy();
   });
 
-  it('should render the "ENTER PINCODE" subtitle when authStep is "verify"', () => {
+  it('should render the "Enter pincode" subtitle when authStep is "verify"', () => {
     // Arrange
     mockAuthStepState = 'verify';
 
@@ -93,7 +94,7 @@ describe('PincodeScreen', () => {
     render(<PincodeScreen />);
 
     // Assert
-    expect(screen.getByText('ENTER PINCODE')).toBeTruthy();
+    expect(screen.getByText('Enter pincode')).toBeTruthy();
   });
 
   it('should call initAuth on mount', () => {
@@ -210,7 +211,7 @@ describe('PincodeScreen', () => {
     fireEvent.press(screen.getByText('4'));
 
     // Wait for component to transition to confirm step
-    await screen.findByText('CONFIRM PINCODE');
+    await screen.findByText('Confirm pincode');
 
     // Enter same PIN in confirm step
     fireEvent.press(screen.getByText('1'));
@@ -219,7 +220,7 @@ describe('PincodeScreen', () => {
     fireEvent.press(screen.getByText('4'));
 
     // Wait for async setupPin to complete
-    await screen.findByText('CONFIRM PINCODE');
+    await screen.findByText('Confirm pincode');
 
     // Assert
     expect(mockSetupPin).toHaveBeenCalledWith('1234');
@@ -243,7 +244,7 @@ describe('PincodeScreen', () => {
     fireEvent.press(screen.getByText('4'));
 
     // Wait for component to transition to confirm step
-    await screen.findByText('CONFIRM PINCODE');
+    await screen.findByText('Confirm pincode');
 
     // Enter a different PIN (confirm step): 5678
     fireEvent.press(screen.getByText('5'));

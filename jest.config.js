@@ -21,6 +21,10 @@ const config = {
 
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
 
+  // Avoids resolving react-native-worklets' `.native.ts` files in tests, which
+  // require the real native Worklets runtime and crash under Jest.
+  resolver: 'react-native-worklets/jest/resolver.js',
+
   // Transpile RN ecosystem packages that ship as ESM / untranspiled source
   transformIgnorePatterns: [
     'node_modules/(?!(' +
@@ -33,6 +37,8 @@ const config = {
         'react-native-gesture-handler',
         'react-native-pager-view',
         'react-native-svg',
+        'react-native-reanimated',
+        'react-native-worklets',
       ].join('|') +
       ')/)',
   ],

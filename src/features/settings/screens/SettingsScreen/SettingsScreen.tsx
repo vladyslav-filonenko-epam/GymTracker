@@ -1,56 +1,46 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
-import { Animated, Pressable, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 
+import { useTranslation } from 'react-i18next';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useShallow } from 'zustand/react/shallow';
 
-import { useSettingsStore } from 'src/features/settings/store';
 import { useTheme } from 'src/shared/theme';
 
-import { createStyles } from './styles';
+import { useStyles } from './styles';
 
 export const SettingsScreen = () => {
-  const { colors, spacing, radius, setTheme: setThemeContext } = useTheme();
-  const { top } = useSafeAreaInsets();
+  const { t } = useTranslation();
+  const { setTheme } = useTheme();
+  const { top: topInset } = useSafeAreaInsets();
 
-  const { theme, setTheme } = useSettingsStore(
-    useShallow(state => ({
-      theme: state.theme,
-      setTheme: state.setTheme,
-    })),
-  );
+  const { styles, isDark } = useStyles({ topInset });
 
-  const isDark = theme === 'dark';
-  const styles = createStyles(colors, spacing, radius, isDark, top);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const thumbAnim = useMemo(() => new Animated.Value(isDark ? 0 : 20), []);
+  const thumbOffset = useSharedValue(isDark ? 0 : 20);
+
+  const thumbAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: thumbOffset.value }],
+  }));
 
   const handleToggle = () => {
     const newTheme = isDark ? 'light' : 'dark';
-    const toValue = newTheme === 'dark' ? 0 : 20;
 
-    Animated.timing(thumbAnim, {
-      toValue,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
-
+    thumbOffset.value = withTiming(newTheme === 'dark' ? 0 : 20, { duration: 200 });
     setTheme(newTheme);
-    setThemeContext(newTheme);
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>SETTINGS</Text>
+      <Text style={styles.title}>{t('settings.title')}</Text>
 
-      <Text style={styles.sectionHeader}>PREFERENCES</Text>
+      <Text style={styles.sectionHeader}>{t('settings.preferences')}</Text>
 
       <View style={styles.row}>
-        <Text style={styles.rowLabel}>Dark Mode</Text>
+        <Text style={styles.rowLabel}>{t('settings.darkMode')}</Text>
 
         <Pressable testID="theme-toggle" onPress={handleToggle} style={styles.toggle}>
-          <Animated.View style={[styles.toggleThumb, { transform: [{ translateX: thumbAnim }] }]} />
+          <Animated.View style={[styles.toggleThumb, thumbAnimatedStyle]} />
         </Pressable>
       </View>
     </View>

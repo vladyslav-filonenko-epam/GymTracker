@@ -1,18 +1,15 @@
-import { StyleSheet } from 'react-native';
+import { createStyles } from 'src/shared/utils';
 
-import type { Colors, Radius, Spacing } from 'src/shared/theme';
-
-export const createStyles = (colors: Colors, spacing: Spacing, _radius: Radius) =>
-  StyleSheet.create({
-    tabBar: {
-      backgroundColor: colors.background.secondary,
-      borderTopWidth: 1,
-      borderTopColor: colors.border,
-      paddingBottom: spacing.sm,
-      paddingTop: spacing.sm,
-    },
-    tabBarLabel: {
-      fontSize: 10,
-      textTransform: 'uppercase' as const,
-    },
-  });
+export const useStyles = createStyles(({ colors, spacing, typography }) => ({
+  tabBar: {
+    backgroundColor: colors.background.secondary,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+    paddingBottom: spacing.sm,
+    paddingTop: spacing.sm,
+  },
+  tabBarLabel: {
+    ...typography.caption,
+    textTransform: 'uppercase' as const,
+  },
+}));

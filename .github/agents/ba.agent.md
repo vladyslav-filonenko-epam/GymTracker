@@ -149,9 +149,10 @@ How the ac-orchestrator consumes AC files — critical context:
 - This means the AC file must be **100% self-contained**: every requirement, constraint, design decision, background detail, edge case, and technical note must be written inside the file
 - Never assume the orchestrator knows anything about the feature that isn't explicitly written in the file
 - Write the AC file as if handing it to a developer who has never spoken to anyone about this feature
-- After saving the file, always end your response with this handoff message:
-  > ✅ AC saved to `.github/AC/[filename].md`
-  > To start development, say: **"New AC: [filename].md"**
+
+**Your job ends when the file is saved.** Do NOT invoke the ac-orchestrator yourself. Do NOT trigger any development pipeline. The user will start development when they are ready by saying "New AC: [filename].md". After saving the file, always end your response with ONLY this message:
+> ✅ AC saved to `.github/AC/[filename].md`
+> To start development, say: **"New AC: [filename].md"**
 
 Clarification rule:
 

@@ -37,10 +37,11 @@ exports[`PincodeScreen should match the snapshot 1`] = `
             "fontWeight": "700",
             "letterSpacing": 4,
             "marginLeft": 8,
+            "textTransform": "uppercase",
           }
         }
       >
-        GYMTRACKER
+        GymTracker
       </Text>
     </View>
     <Text
@@ -51,152 +52,96 @@ exports[`PincodeScreen should match the snapshot 1`] = `
           "fontWeight": "600",
           "letterSpacing": 3,
           "marginTop": 4,
+          "textTransform": "uppercase",
         }
       }
     >
-      CREATE PINCODE
+      Create pincode
     </Text>
   </View>
   <View
-    collapsable={false}
     style={
-      {
-        "flexDirection": "row",
-        "gap": 12,
-        "justifyContent": "center",
-        "marginBottom": 48,
-        "transform": [
-          {
-            "translateX": 0,
-          },
-        ],
-      }
+      [
+        {
+          "flexDirection": "row",
+          "gap": 12,
+          "justifyContent": "center",
+          "marginBottom": 48,
+        },
+        {
+          "transform": [
+            {
+              "translateX": 0,
+            },
+          ],
+        },
+      ]
     }
   >
     <View
       style={
         [
           {
-            "borderColor": "rgba(255,255,255,0.2)",
             "borderRadius": 9999,
             "borderWidth": 2,
             "height": 16,
             "width": 16,
           },
-          false,
+          {
+            "backgroundColor": undefined,
+            "borderColor": undefined,
+          },
         ]
       }
-    >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "#C8FF00",
-            "borderRadius": 9999,
-            "flex": 1,
-            "opacity": 0,
-            "transform": [
-              {
-                "scale": 0.6,
-              },
-            ],
-          }
-        }
-      />
-    </View>
+    />
     <View
       style={
         [
           {
-            "borderColor": "rgba(255,255,255,0.2)",
             "borderRadius": 9999,
             "borderWidth": 2,
             "height": 16,
             "width": 16,
           },
-          false,
+          {
+            "backgroundColor": undefined,
+            "borderColor": undefined,
+          },
         ]
       }
-    >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "#C8FF00",
-            "borderRadius": 9999,
-            "flex": 1,
-            "opacity": 0,
-            "transform": [
-              {
-                "scale": 0.6,
-              },
-            ],
-          }
-        }
-      />
-    </View>
+    />
     <View
       style={
         [
           {
-            "borderColor": "rgba(255,255,255,0.2)",
             "borderRadius": 9999,
             "borderWidth": 2,
             "height": 16,
             "width": 16,
           },
-          false,
+          {
+            "backgroundColor": undefined,
+            "borderColor": undefined,
+          },
         ]
       }
-    >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "#C8FF00",
-            "borderRadius": 9999,
-            "flex": 1,
-            "opacity": 0,
-            "transform": [
-              {
-                "scale": 0.6,
-              },
-            ],
-          }
-        }
-      />
-    </View>
+    />
     <View
       style={
         [
           {
-            "borderColor": "rgba(255,255,255,0.2)",
             "borderRadius": 9999,
             "borderWidth": 2,
             "height": 16,
             "width": 16,
           },
-          false,
+          {
+            "backgroundColor": undefined,
+            "borderColor": undefined,
+          },
         ]
       }
-    >
-      <View
-        collapsable={false}
-        style={
-          {
-            "backgroundColor": "#C8FF00",
-            "borderRadius": 9999,
-            "flex": 1,
-            "opacity": 0,
-            "transform": [
-              {
-                "scale": 0.6,
-              },
-            ],
-          }
-        }
-      />
-    </View>
+    />
   </View>
   <View
     style={
@@ -833,6 +778,7 @@ exports[`PincodeScreen should match the snapshot 1`] = `
             {
               "color": "#F0F0F2",
               "fontSize": 24,
+              "fontWeight": "600",
             }
           }
         >

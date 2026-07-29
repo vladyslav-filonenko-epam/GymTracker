@@ -1,30 +1,30 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import { Animated, Pressable, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 import type { NavigationProp } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
+import Animated, {
+  interpolateColor,
+  useAnimatedStyle,
+  useSharedValue,
+  withSequence,
+  withTiming,
+} from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
 import { useShallow } from 'zustand/react/shallow';
 
 import { useAuthStore } from 'src/features/auth/store';
 import type { RootStackParamList } from 'src/navigation/types';
 import { DumbbellIcon } from 'src/shared/icons';
-import { useTheme } from 'src/shared/theme';
 
-import { createStyles } from './styles';
-
-const PIN_LENGTH = 4;
-
-const NUMPAD_ROWS = [
-  ['1', '2', '3'],
-  ['4', '5', '6'],
-  ['7', '8', '9'],
-  ['', '0', 'del'],
-];
+import { NUMPAD_ROWS, PIN_LENGTH } from './constants';
+import { useStyles } from './styles';
 
 export const PincodeScreen = () => {
-  const { colors, spacing, radius } = useTheme();
-  const styles = createStyles(colors, spacing, radius);
+  const { t } = useTranslation();
+  const { styles, colors } = useStyles();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const { authStep, setAuthStep, setupPin, verifyPin, initAuth } = useAuthStore(
@@ -40,120 +40,153 @@ export const PincodeScreen = () => {
   const [pin, setPin] = useState('');
   const [firstPin, setFirstPin] = useState('');
 
-  const shakeAnim = useMemo(() => new Animated.Value(0), []);
-  const dotAnims = useMemo(
-    () =>
-      Array.from({ length: PIN_LENGTH }, () => ({
-        scale: new Animated.Value(0.6),
-        opacity: new Animated.Value(0),
-      })),
-    [],
-  );
+  const shakeOffset = useSharedValue(0);
+  const pinLength = useSharedValue(0);
+
+  const shakeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     initAuth();
+    return () => {
+      if (shakeTimerRef.current) clearTimeout(shakeTimerRef.current);
+      if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
+    };
   }, [initAuth]);
 
-  const animateDotFill = (index: number, filled: boolean) => {
-    if (filled) {
-      Animated.parallel([
-        Animated.timing(dotAnims[index].scale, {
-          toValue: 1,
-          duration: 150,
-          useNativeDriver: true,
-        }),
-        Animated.timing(dotAnims[index].opacity, {
-          toValue: 1,
-          duration: 150,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    } else {
-      Animated.parallel([
-        Animated.timing(dotAnims[index].scale, {
-          toValue: 0.6,
-          duration: 100,
-          useNativeDriver: true,
-        }),
-        Animated.timing(dotAnims[index].opacity, {
-          toValue: 0,
-          duration: 100,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    }
-  };
+  const containerAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: shakeOffset.value }],
+  }));
 
-  const resetPin = () => {
+  const dot0AnimStyle = useAnimatedStyle(() => ({
+    backgroundColor: interpolateColor(
+      pinLength.value,
+      [0, 1],
+      ['transparent', colors.accent.primary],
+    ),
+    borderColor: interpolateColor(
+      pinLength.value,
+      [0, 1],
+      [colors.overlay.border, colors.accent.primary],
+    ),
+  }));
+  const dot1AnimStyle = useAnimatedStyle(() => ({
+    backgroundColor: interpolateColor(
+      pinLength.value,
+      [1, 2],
+      ['transparent', colors.accent.primary],
+    ),
+    borderColor: interpolateColor(
+      pinLength.value,
+      [1, 2],
+      [colors.overlay.border, colors.accent.primary],
+    ),
+  }));
+  const dot2AnimStyle = useAnimatedStyle(() => ({
+    backgroundColor: interpolateColor(
+      pinLength.value,
+      [2, 3],
+      ['transparent', colors.accent.primary],
+    ),
+    borderColor: interpolateColor(
+      pinLength.value,
+      [2, 3],
+      [colors.overlay.border, colors.accent.primary],
+    ),
+  }));
+  const dot3AnimStyle = useAnimatedStyle(() => ({
+    backgroundColor: interpolateColor(
+      pinLength.value,
+      [3, 4],
+      ['transparent', colors.accent.primary],
+    ),
+    borderColor: interpolateColor(
+      pinLength.value,
+      [3, 4],
+      [colors.overlay.border, colors.accent.primary],
+    ),
+  }));
+
+  const dotAnimStyles = [dot0AnimStyle, dot1AnimStyle, dot2AnimStyle, dot3AnimStyle];
+
+  const resetPin = useCallback(() => {
     setPin('');
-    for (let i = 0; i < PIN_LENGTH; i++) {
-      animateDotFill(i, false);
-    }
-  };
+    pinLength.value = withTiming(0, { duration: 100 });
+  }, [pinLength]);
 
-  const triggerShake = () => {
-    Animated.sequence([
-      Animated.timing(shakeAnim, { toValue: 10, duration: 60, useNativeDriver: true }),
-      Animated.timing(shakeAnim, { toValue: -10, duration: 60, useNativeDriver: true }),
-      Animated.timing(shakeAnim, { toValue: 8, duration: 60, useNativeDriver: true }),
-      Animated.timing(shakeAnim, { toValue: -8, duration: 60, useNativeDriver: true }),
-      Animated.timing(shakeAnim, { toValue: 0, duration: 60, useNativeDriver: true }),
-    ]).start(() => {
-      setTimeout(() => resetPin(), 100);
-    });
-  };
+  const triggerShake = useCallback(() => {
+    shakeOffset.value = withSequence(
+      withTiming(10, { duration: 60 }),
+      withTiming(-10, { duration: 60 }),
+      withTiming(8, { duration: 60 }),
+      withTiming(-8, { duration: 60 }),
+      withTiming(0, { duration: 60 }),
+    );
+    shakeTimerRef.current = setTimeout(resetPin, 400);
+  }, [shakeOffset, resetPin]);
 
-  const handleDigit = async (digit: string) => {
-    if (pin.length >= PIN_LENGTH) return;
+  const handlePinComplete = useCallback(
+    async (completedPin: string) => {
+      if (authStep === 'create') {
+        setFirstPin(completedPin);
+        setAuthStep('confirm');
+        resetPin();
+      } else if (authStep === 'confirm') {
+        if (completedPin === firstPin) {
+          await setupPin(completedPin);
+          navigation.navigate('App');
+        } else {
+          triggerShake();
+          setFirstPin('');
+          resetTimerRef.current = setTimeout(() => {
+            setAuthStep('create');
+            resetPin();
+          }, 600);
+        }
+      } else if (authStep === 'verify') {
+        const success = await verifyPin(completedPin);
 
-    const newPin = pin + digit;
+        if (success) {
+          navigation.navigate('App');
+        } else {
+          triggerShake();
+        }
+      }
+    },
+    [authStep, firstPin, setupPin, verifyPin, navigation, triggerShake, resetPin, setAuthStep],
+  );
 
-    setPin(newPin);
-    animateDotFill(newPin.length - 1, true);
+  const handleDigit = useCallback(
+    async (digit: string) => {
+      if (pin.length >= PIN_LENGTH) return;
 
-    if (newPin.length === PIN_LENGTH) {
-      await handlePinComplete(newPin);
-    }
-  };
+      const newPin = pin + digit;
 
-  const handleDelete = () => {
+      setPin(newPin);
+
+      if (newPin.length === PIN_LENGTH) {
+        pinLength.value = withTiming(newPin.length, { duration: 150 }, finished => {
+          if (finished) {
+            scheduleOnRN(handlePinComplete, newPin);
+          }
+        });
+      } else {
+        pinLength.value = withTiming(newPin.length, { duration: 150 });
+      }
+    },
+    [pin, pinLength, handlePinComplete],
+  );
+
+  const handleDelete = useCallback(() => {
     if (pin.length === 0) return;
-    animateDotFill(pin.length - 1, false);
     setPin(prev => prev.slice(0, -1));
-  };
+    pinLength.value = withTiming(pin.length - 1, { duration: 100 });
+  }, [pin, pinLength]);
 
-  const handlePinComplete = async (completedPin: string) => {
-    if (authStep === 'create') {
-      setFirstPin(completedPin);
-      setAuthStep('confirm');
-      resetPin();
-    } else if (authStep === 'confirm') {
-      if (completedPin === firstPin) {
-        await setupPin(completedPin);
-        navigation.navigate('App');
-      } else {
-        triggerShake();
-        setFirstPin('');
-        setTimeout(() => {
-          setAuthStep('create');
-          resetPin();
-        }, 600);
-      }
-    } else if (authStep === 'verify') {
-      const success = await verifyPin(completedPin);
-
-      if (success) {
-        navigation.navigate('App');
-      } else {
-        triggerShake();
-      }
-    }
-  };
-
-  const getSubtitle = () => {
-    if (authStep === 'verify') return 'ENTER PINCODE';
-    if (authStep === 'confirm') return 'CONFIRM PINCODE';
-    return 'CREATE PINCODE';
+  const subtitles: Record<'verify' | 'confirm' | 'create', string> = {
+    verify: t('auth.enterPin'),
+    confirm: t('auth.confirmPin'),
+    create: t('auth.createPin'),
   };
 
   const renderKey = (key: string, colIndex: number) => {
@@ -182,25 +215,15 @@ export const PincodeScreen = () => {
         <View style={styles.logoRow}>
           <DumbbellIcon width={24} height={24} color={colors.accent.primary} />
 
-          <Text style={styles.logoText}>GYMTRACKER</Text>
+          <Text style={styles.logoText}>{t('auth.appName')}</Text>
         </View>
 
-        <Text style={styles.subtitle}>{getSubtitle()}</Text>
+        <Text style={styles.subtitle}>{subtitles[authStep]}</Text>
       </View>
 
-      <Animated.View style={[styles.dotsContainer, { transform: [{ translateX: shakeAnim }] }]}>
+      <Animated.View style={[styles.dotsContainer, containerAnimatedStyle]}>
         {Array.from({ length: PIN_LENGTH }, (_, i) => (
-          <View key={i} style={[styles.dot, i < pin.length && styles.dotFilled]}>
-            <Animated.View
-              style={{
-                flex: 1,
-                borderRadius: radius.full,
-                backgroundColor: colors.accent.primary,
-                transform: [{ scale: dotAnims[i].scale }],
-                opacity: dotAnims[i].opacity,
-              }}
-            />
-          </View>
+          <Animated.View key={i} style={[styles.dot, dotAnimStyles[i]]} />
         ))}
       </Animated.View>
 

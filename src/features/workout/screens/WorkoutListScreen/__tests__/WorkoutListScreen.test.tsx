@@ -2,6 +2,8 @@ import React from 'react';
 
 import { render, screen } from '@testing-library/react-native';
 
+import 'src/shared/localization';
+
 import { WorkoutListScreen } from '../WorkoutListScreen';
 
 jest.mock('react-native-safe-area-context', () => ({
@@ -9,27 +11,8 @@ jest.mock('react-native-safe-area-context', () => ({
   SafeAreaProvider: ({ children }: { children: React.ReactNode }) => children,
 }));
 
-jest.mock('src/shared/theme', () => ({
-  useTheme: () => ({
-    colors: {
-      background: { primary: '#0C0C0E', secondary: '#1E1E22', card: '#161618' },
-      surface: '#2A2A2F',
-      accent: { primary: '#C8FF00', secondary: '#A8D900' },
-      text: { primary: '#F0F0F2', secondary: '#888896', muted: '#555560' },
-      border: 'rgba(255, 255, 255, 0.08)',
-      status: { success: '#4CAF50', error: '#FF3B5C', warning: '#FF9800' },
-      overlay: { subtle: 'rgba(255,255,255,0.06)', border: 'rgba(255,255,255,0.2)' },
-      static: { white: '#FFFFFF', black: '#000000' },
-    },
-    spacing: { xs: 4, sm: 8, md: 12, lg: 16, xl: 20, xxl: 24, xxxl: 32, huge: 48, giant: 64 },
-    radius: { sm: 4, md: 8, lg: 12, xl: 16, full: 9999 },
-    theme: 'dark',
-    setTheme: jest.fn(),
-  }),
-}));
-
 describe('WorkoutListScreen', () => {
-  it('should render the "WORKOUTS" header', () => {
+  it('should render the "Workouts" header', () => {
     // Arrange
     // no additional arrangement needed
 
@@ -37,7 +20,7 @@ describe('WorkoutListScreen', () => {
     render(<WorkoutListScreen />);
 
     // Assert
-    expect(screen.getByText('WORKOUTS')).toBeTruthy();
+    expect(screen.getByText('Workouts')).toBeTruthy();
   });
 
   it('should render the empty state message', () => {

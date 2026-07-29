@@ -98,6 +98,8 @@ module.exports = [
       // React Hooks
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
+      // Reanimated requires mutating `.value` on shared values — this rule is a false positive
+      'react-hooks/immutability': 'off',
 
       // React Native
       'react-native/no-unused-styles': 'error',
@@ -115,11 +117,15 @@ module.exports = [
         { blankLine: 'any', prev: ['const', 'let', 'var'], next: ['const', 'let', 'var'] },
       ],
 
-      // TS
+      // TS — disable base JS rules that have TS-aware replacements
+      'no-unused-vars': 'off',
+      'no-unused-expressions': 'off',
+
       '@typescript-eslint/no-unused-vars': [
         'error',
         { ignoreRestSiblings: true, argsIgnorePattern: '^_' },
       ],
+      '@typescript-eslint/no-unused-expressions': 'error',
       '@typescript-eslint/ban-ts-comment': ['warn', { 'ts-ignore': 'allow-with-description' }],
     },
   },

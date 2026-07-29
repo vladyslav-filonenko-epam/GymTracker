@@ -10,6 +10,7 @@ A constant is a **static, immutable value** that is used in multiple places or g
 ## Where to Place Constants
 | Scope | Location |
 |---|---|
+| Used by 1 screen only | `src/features/<name>/screens/<Screen>/constants.ts` |
 | Used by 1 component only | `src/features/<name>/components/<Component>/constants.ts` |
 | Used by 2+ components in the same feature | `src/features/<name>/constants.ts` |
 | Used by 2+ features | `src/shared/constants.ts` |
