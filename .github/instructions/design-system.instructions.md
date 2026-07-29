@@ -61,7 +61,8 @@ All typography tokens live in `src/shared/theme/tokens.ts`. **Never override `fo
 ## Usage Rules
 - NEVER hardcode colors — `colors` is available from `useStyles` or `useTheme()` for non-style uses (e.g. icon props)
 - NEVER hardcode spacing — use spacing tokens
-- NEVER hardcode font sizes or weights — spread the relevant `typography` token: `{ ...typography.heading.xl, color: colors.text.primary }`
+- NEVER hardcode font sizes or weights — spread the relevant `typography` token: `{ ...typography.heading.xl }`
+- Typography tokens already include `color: colors.text.primary` by default — no need to add it manually. Override only when a different color is intentionally needed: `{ ...typography.body.md, color: colors.text.secondary }`
 - NEVER override `fontSize` or `fontWeight` after spreading a token — add a new token to `tokens.ts` instead
 - `isDark` is available directly from `useStyles` — no need to call `useTheme()` to compute it
 - Screen horizontal padding: `spacing.lg` (16)
@@ -82,7 +83,7 @@ export const useStyles = createStyles(({ colors, spacing, radius, typography }) 
   },
   title: {
     ...typography.heading.xl,
-    color: colors.text.primary,
+    // color: colors.text.primary is included automatically — override only when needed
   },
 }));
 ```

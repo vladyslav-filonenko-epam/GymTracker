@@ -1,17 +1,25 @@
-// src/shared/utils/create-styles.ts
-// ARCHITECTURAL EXCEPTION: This file contains React hook logic inside a factory function.
-// createStyles returns a custom hook. It is the only hook-producing utility in src/shared/utils/
-// because it is fundamentally tied to the theme system and must call useContext + useMemo.
-//
-// DESIGN DECISION: The returned hook also surfaces { colors, typography, isDark } so that
-// components can avoid a separate useTheme() call for non-style uses (e.g. SVG icon color props).
 import { useContext, useMemo } from 'react';
 
 import { StyleSheet } from 'react-native';
 
 import { ThemeContext } from 'src/shared/theme/ThemeProvider';
-import { typography } from 'src/shared/theme/tokens';
-import type { Colors, Radius, Spacing, Typography } from 'src/shared/theme/types';
+import { typography as baseTypography } from 'src/shared/theme/tokens';
+import type { Colors, Radius, Spacing, Typography, TypographyToken } from 'src/shared/theme/types';
+
+const isToken = (v: unknown): v is TypographyToken =>
+  typeof v === 'object' && v !== null && 'fontSize' in v;
+
+const enrichTypography = (obj: Record<string, unknown>, color: string): Record<string, unknown> =>
+  Object.fromEntries(
+    Object.entries(obj).map(([k, v]) => [
+      k,
+      isToken(v)
+        ? { ...v, color }
+        : typeof v === 'object' && v !== null
+          ? enrichTypography(v as Record<string, unknown>, color)
+          : v,
+    ]),
+  );
 
 export interface ThemeProps {
   colors: Colors;
@@ -46,6 +54,10 @@ export const createStyles = <
     const isDark = theme === 'dark';
 
     return useMemo(() => {
+      const typography = enrichTypography(
+        baseTypography as unknown as Record<string, unknown>,
+        colors.text.primary,
+      ) as unknown as Typography;
       const themeProps: ThemeProps = { colors, spacing, radius, typography, isDark };
 
       return {

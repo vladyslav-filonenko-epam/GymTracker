@@ -55,6 +55,7 @@ export interface Radius {
 export interface TypographyToken {
   fontSize: number;
   fontWeight: TextStyle['fontWeight'];
+  color?: string;
 }
 
 export interface Typography {

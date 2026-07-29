@@ -17,16 +17,8 @@ import { useAuthStore } from 'src/features/auth/store';
 import type { RootStackParamList } from 'src/navigation/types';
 import { DumbbellIcon } from 'src/shared/icons';
 
+import { NUMPAD_ROWS, PIN_LENGTH } from './constants';
 import { useStyles } from './styles';
-
-const PIN_LENGTH = 4;
-
-const NUMPAD_ROWS = [
-  ['1', '2', '3'],
-  ['4', '5', '6'],
-  ['7', '8', '9'],
-  ['', '0', 'del'],
-];
 
 export const PincodeScreen = () => {
   const { t } = useTranslation();
@@ -48,41 +40,32 @@ export const PincodeScreen = () => {
 
   const shakeOffset = useSharedValue(0);
 
-  const dot0Scale = useSharedValue(0.6);
-  const dot0Opacity = useSharedValue(0);
-  const dot1Scale = useSharedValue(0.6);
-  const dot1Opacity = useSharedValue(0);
-  const dot2Scale = useSharedValue(0.6);
-  const dot2Opacity = useSharedValue(0);
-  const dot3Scale = useSharedValue(0.6);
-  const dot3Opacity = useSharedValue(0);
+  const dot0Fill = useSharedValue(0);
+  const dot1Fill = useSharedValue(0);
+  const dot2Fill = useSharedValue(0);
+  const dot3Fill = useSharedValue(0);
 
-  const dotSharedValues = [
-    { scale: dot0Scale, opacity: dot0Opacity },
-    { scale: dot1Scale, opacity: dot1Opacity },
-    { scale: dot2Scale, opacity: dot2Opacity },
-    { scale: dot3Scale, opacity: dot3Opacity },
-  ];
+  const dotFills = [dot0Fill, dot1Fill, dot2Fill, dot3Fill];
 
   const containerAnimatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: shakeOffset.value }],
   }));
 
   const dot0AnimStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: dot0Scale.value }],
-    opacity: dot0Opacity.value,
+    transform: [{ scale: 0.6 + dot0Fill.value * 0.4 }],
+    opacity: dot0Fill.value,
   }));
   const dot1AnimStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: dot1Scale.value }],
-    opacity: dot1Opacity.value,
+    transform: [{ scale: 0.6 + dot1Fill.value * 0.4 }],
+    opacity: dot1Fill.value,
   }));
   const dot2AnimStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: dot2Scale.value }],
-    opacity: dot2Opacity.value,
+    transform: [{ scale: 0.6 + dot2Fill.value * 0.4 }],
+    opacity: dot2Fill.value,
   }));
   const dot3AnimStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: dot3Scale.value }],
-    opacity: dot3Opacity.value,
+    transform: [{ scale: 0.6 + dot3Fill.value * 0.4 }],
+    opacity: dot3Fill.value,
   }));
 
   const dotAnimStyles = [dot0AnimStyle, dot1AnimStyle, dot2AnimStyle, dot3AnimStyle];
@@ -92,11 +75,10 @@ export const PincodeScreen = () => {
   }, [initAuth]);
 
   const animateDotFill = (index: number, filled: boolean) => {
-    const dot = dotSharedValues[index];
+    const fill = dotFills[index];
 
-    if (dot) {
-      dot.scale.value = withTiming(filled ? 1 : 0.6, { duration: filled ? 150 : 100 });
-      dot.opacity.value = withTiming(filled ? 1 : 0, { duration: filled ? 150 : 100 });
+    if (fill) {
+      fill.value = withTiming(filled ? 1 : 0, { duration: filled ? 150 : 100 });
     }
   };
 

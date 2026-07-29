@@ -5,10 +5,30 @@ import { renderHook } from '@testing-library/react-native';
 import { darkColors, lightColors } from 'src/shared/theme/colors';
 import { ThemeContext } from 'src/shared/theme/ThemeProvider';
 import { radius, spacing, typography } from 'src/shared/theme/tokens';
-import type { Theme } from 'src/shared/theme/types';
+import type { Theme, Typography } from 'src/shared/theme/types';
 
 import { createStyles } from '../create-styles';
 import type { ThemeProps } from '../create-styles';
+
+const addColor = (color: string): Typography => ({
+  heading: {
+    xl: { ...typography.heading.xl, color },
+    lg: { ...typography.heading.lg, color },
+    md: { ...typography.heading.md, color },
+    sm: { ...typography.heading.sm, color },
+  },
+  body: {
+    lg: { ...typography.body.lg, color },
+    md: { ...typography.body.md, color },
+    sm: { ...typography.body.sm, color },
+  },
+  caption: { ...typography.caption, color },
+  label: { ...typography.label, color },
+  display: {
+    sm: { ...typography.display.sm, color },
+    md: { ...typography.display.md, color },
+  },
+});
 
 const buildThemeValue = (theme: 'dark' | 'light'): Theme => ({
   colors: theme === 'dark' ? darkColors : lightColors,
@@ -50,7 +70,7 @@ describe('createStyles', () => {
         colors: darkColors,
         spacing,
         radius,
-        typography,
+        typography: addColor(darkColors.text.primary),
         isDark: true,
       },
       {},
@@ -72,7 +92,7 @@ describe('createStyles', () => {
       backgroundColor: darkColors.background.primary,
     });
     expect(result.current.colors).toEqual(darkColors);
-    expect(result.current.typography).toEqual(typography);
+    expect(result.current.typography).toEqual(addColor(darkColors.text.primary));
     expect(result.current.isDark).toBe(true);
   });
 

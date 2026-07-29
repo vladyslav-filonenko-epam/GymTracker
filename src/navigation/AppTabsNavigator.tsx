@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 import { DumbbellIcon, ListChecksIcon, SettingsIcon } from 'src/shared/icons';
 
+import { ICON_SIZE } from './constants';
 import { ExercisesNavigator } from './ExercisesNavigator';
 import { SettingsNavigator } from './SettingsNavigator';
 import { useStyles } from './styles';
@@ -22,8 +23,6 @@ type AppTabParamList = {
 };
 
 const Tab = createBottomTabNavigator<AppTabParamList>();
-
-const ICON_SIZE = 22;
 
 export const AppTabsNavigator = () => {
   const { t } = useTranslation();
