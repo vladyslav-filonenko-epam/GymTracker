@@ -2,8 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Pressable, Text, View } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
-import type { NavigationProp } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import Animated, {
   interpolateColor,
@@ -15,8 +13,8 @@ import Animated, {
 import { scheduleOnRN } from 'react-native-worklets';
 import { useShallow } from 'zustand/react/shallow';
 
-import { useAuthStore } from 'src/features/auth/store';
-import type { RootStackParamList } from 'src/navigation/types';
+import { useAuthStore } from 'src/features/auth';
+import { useAppNavigation } from 'src/navigation/hooks';
 import { DumbbellIcon } from 'src/shared/icons';
 
 import { NUMPAD_ROWS, PIN_LENGTH } from './constants';
@@ -25,7 +23,7 @@ import { useStyles } from './styles';
 export const PincodeScreen = () => {
   const { t } = useTranslation();
   const { styles, colors } = useStyles();
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const navigation = useAppNavigation();
 
   const { authStep, setAuthStep, setupPin, verifyPin, initAuth } = useAuthStore(
     useShallow(state => ({
@@ -134,7 +132,7 @@ export const PincodeScreen = () => {
       } else if (authStep === 'confirm') {
         if (completedPin === firstPin) {
           await setupPin(completedPin);
-          navigation.navigate('App');
+          navigation.navigate('App', { screen: 'WorkoutTab', params: { screen: 'WorkoutList' } });
         } else {
           triggerShake();
           setFirstPin('');
@@ -147,7 +145,7 @@ export const PincodeScreen = () => {
         const success = await verifyPin(completedPin);
 
         if (success) {
-          navigation.navigate('App');
+          navigation.navigate('App', { screen: 'WorkoutTab', params: { screen: 'WorkoutList' } });
         } else {
           triggerShake();
         }

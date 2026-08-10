@@ -13,15 +13,11 @@ applyTo: "src/db/**, src/features/**"
 
 ## MMKV — non-sensitive key-value storage
 ```ts
-// src/shared/utils/storage.ts — single instance, always import from here
-import { MMKV } from 'react-native-mmkv';
-export const storage = new MMKV({ id: 'gymtracker' });
+// src/shared/utils/storage.ts — single instance + all keys, always import from here
+import { storage, MMKV_KEYS } from 'src/shared/utils';
+storage.getBoolean(MMKV_KEYS.IS_AUTHENTICATED);
 ```
-MMKV keys:
-- `biometrics_enabled` (boolean)
-- `theme` ('dark' | 'light' | 'system')
-- `is_authenticated` (boolean) — session flag
-- `exercises_seeded` (boolean) — whether the exercise library has been seeded
+Keys are defined as `MMKV_KEYS` in `storage.ts`. Never write key strings inline.
 
 ## Keychain — sensitive credential storage
 ```ts
@@ -53,24 +49,6 @@ workout_exercises — id, workoutId→workouts, exerciseId→exercises, orderInd
 sets            — id, workoutExerciseId→workout_exercises, reps, weight(real), isCompleted, createdAt
 ```
 
-## Drizzle Schema Template
-```ts
-import { integer, real, sqliteTable, text } from 'drizzle-orm/op-sqlite';
-
-export const exercises = sqliteTable('exercises', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
-  name: text('name').notNull(),
-  photoUri: text('photo_uri'),
-  muscleGroup: text('muscle_group'),
-  isCustom: integer('is_custom', { mode: 'boolean' }).notNull().default(false),
-  createdAt: integer('created_at', { mode: 'number' }).notNull().$defaultFn(() => Date.now()),
-  updatedAt: integer('updated_at', { mode: 'number' }).notNull().$defaultFn(() => Date.now()),
-});
-
-export type Exercise = typeof exercises.$inferSelect;
-export type NewExercise = typeof exercises.$inferInsert;
-```
-
 ## Repository Template
 ```ts
 import { eq, desc } from 'drizzle-orm';
@@ -97,6 +75,11 @@ export const exercisesRepository = {
 
 ## Repository File Naming
 `src/db/repositories/<name>-repository.ts` — kebab-case with `-repository` suffix.
+
+## Repository Rules
+- Repositories return domain types, not raw Drizzle types
+- Never import the Drizzle `db` instance outside of `src/db/`
+- All async operations wrap errors as `AppError`
 
 ## Exercise Library Seed Data
 Use **free-exercise-db** (https://github.com/yuhonas/free-exercise-db) — ~800 open-source exercises

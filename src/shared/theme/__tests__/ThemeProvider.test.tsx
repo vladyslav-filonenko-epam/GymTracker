@@ -2,7 +2,7 @@ import React from 'react';
 
 import { act, renderHook } from '@testing-library/react-native';
 
-import { storage } from 'src/shared/utils/storage';
+import { storage } from 'src/shared/utils';
 
 import { darkColors, lightColors } from '../colors';
 import { ThemeContext, ThemeProvider } from '../ThemeProvider';

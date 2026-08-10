@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 
-import { hashPin } from 'src/shared/utils/hash-pin';
-import { keychainUtils } from 'src/shared/utils/keychain';
+import { hashPin, keychainUtils } from 'src/shared/utils';
 
 import type { AuthStep } from '../types';
 

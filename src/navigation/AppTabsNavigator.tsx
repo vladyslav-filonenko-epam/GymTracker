@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import type { NavigatorScreenParams } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
 import { DumbbellIcon, ListChecksIcon, SettingsIcon } from 'src/shared/icons';
@@ -10,17 +9,8 @@ import { ICON_SIZE } from './constants';
 import { ExercisesNavigator } from './ExercisesNavigator';
 import { SettingsNavigator } from './SettingsNavigator';
 import { useStyles } from './styles';
+import type { AppTabParamList } from './types';
 import { WorkoutNavigator } from './WorkoutNavigator';
-
-type WorkoutStackParamList = { WorkoutList: undefined };
-type ExercisesStackParamList = { ExercisesList: undefined };
-type SettingsStackParamList = { Settings: undefined };
-
-type AppTabParamList = {
-  WorkoutTab: NavigatorScreenParams<WorkoutStackParamList>;
-  ExercisesTab: NavigatorScreenParams<ExercisesStackParamList>;
-  SettingsTab: NavigatorScreenParams<SettingsStackParamList>;
-};
 
 const Tab = createBottomTabNavigator<AppTabParamList>();
 

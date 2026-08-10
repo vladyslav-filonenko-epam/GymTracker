@@ -4,19 +4,14 @@ import { fireEvent, render, screen } from '@testing-library/react-native';
 
 import 'src/shared/localization';
 import { darkColors, lightColors } from 'src/shared/theme/colors';
-// Import ThemeContext directly from its source module (not from the barrel mock)
-// so the createStyles-based useStyles hook receives the correct isDark value.
+// ThemeContext must be imported directly (not from the barrel) to avoid the
+// utils ↔ theme circular dependency that makes ThemeContext undefined in tests.
 import { ThemeContext } from 'src/shared/theme/ThemeProvider';
 import { radius, spacing, typography } from 'src/shared/theme/tokens';
 
 import { SettingsScreen } from '../SettingsScreen';
 
 const mockSetTheme = jest.fn();
-
-jest.mock('react-native-safe-area-context', () => ({
-  useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }),
-  SafeAreaProvider: ({ children }: { children: React.ReactNode }) => children,
-}));
 
 // Only useTheme is needed from this module; the component derives isDark via useStyles / ThemeContext.
 jest.mock('src/shared/theme', () => ({

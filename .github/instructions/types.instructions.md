@@ -119,11 +119,11 @@ export interface WorkoutSet {
 Use this generic for any loading/error data:
 ```ts
 // src/shared/types/async-state.ts
-export type AsyncState<T> =
-  | { status: 'idle' }
-  | { status: 'loading' }
-  | { status: 'success'; data: T }
-  | { status: 'error'; error: string };
+export interface AsyncState<T> {
+  data: T | null;
+  isLoading: boolean;
+  error: string | null;
+}
 ```
 
 ## DB-Derived Types

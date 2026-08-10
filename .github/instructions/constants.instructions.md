@@ -15,8 +15,6 @@ A constant is a **static, immutable value** that is used in multiple places or g
 | Used by 2+ components in the same feature | `src/features/<name>/constants.ts` |
 | Used by 2+ features | `src/shared/constants.ts` |
 
-Promote up only when a **second consumer** appears.
-
 ## File vs Folder
 Constants start as a **single file** (`constants.ts`). Promote to a **folder** only when it grows to contain multiple distinct domains of constants:
 
@@ -32,30 +30,14 @@ src/features/workout/constants/
 
 ## File Naming
 - Inside a component folder: `constants.ts` (lowercase single-word)
-- In a constants folder: `kebab-case.ts` — e.g. `workout-limits.ts`, `mmkv-keys.ts`
+- In a constants folder: `kebab-case.ts` — e.g. `workout-limits.ts`, `animation-durations.ts`
 
 ## Naming Convention
 Constants use `SCREAMING_SNAKE_CASE`:
 ```ts
 export const MAX_SETS = 20;
-export const MAX_REPS = 999;
-export const MAX_WEIGHT_KG = 999;
-export const MIN_PIN_LENGTH = 4;
 export const MAX_PIN_LENGTH = 6;
 ```
-
-## MMKV Storage Keys
-All MMKV keys are defined in one place — `src/shared/constants/mmkv-keys.ts`:
-```ts
-export const MMKV_KEYS = {
-  BIOMETRICS_ENABLED: 'biometrics_enabled',
-  THEME: 'theme',
-  IS_AUTHENTICATED: 'is_authenticated',
-  EXERCISES_SEEDED: 'exercises_seeded',
-} as const;
-```
-
-Always import from this file — never write MMKV key strings inline anywhere else.
 
 ## Rules
 - Named exports only — no `export default`

@@ -167,7 +167,10 @@ describe('PincodeScreen', () => {
     await screen.findByText('1');
 
     // Assert
-    expect(mockNavigate).toHaveBeenCalledWith('App');
+    expect(mockNavigate).toHaveBeenCalledWith('App', {
+      screen: 'WorkoutTab',
+      params: { screen: 'WorkoutList' },
+    });
   });
 
   it('should not navigate when verifyPin fails', async () => {
@@ -224,7 +227,10 @@ describe('PincodeScreen', () => {
 
     // Assert
     expect(mockSetupPin).toHaveBeenCalledWith('1234');
-    expect(mockNavigate).toHaveBeenCalledWith('App');
+    expect(mockNavigate).toHaveBeenCalledWith('App', {
+      screen: 'WorkoutTab',
+      params: { screen: 'WorkoutList' },
+    });
   });
 
   it('should not call setupPin and should reset to create when confirmed pin does not match', async () => {
