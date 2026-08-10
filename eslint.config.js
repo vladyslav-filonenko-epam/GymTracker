@@ -132,7 +132,7 @@ module.exports = [
 
   // Test file overrides
   {
-    files: ['**/*.test.ts', '**/*.test.tsx', '**/*.spec.ts', '**/*.spec.tsx'],
+    files: ['**/*.test.ts', '**/*.test.tsx', '**/*.spec.ts', '**/*.spec.tsx', 'jest.setup.ts'],
     languageOptions: {
       globals: {
         ...globals.jest,

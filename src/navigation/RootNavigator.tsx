@@ -3,7 +3,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { useAuthStore } from 'src/features/auth/store';
+import { useAuthStore } from 'src/features/auth';
 
 import { AppTabsNavigator } from './AppTabsNavigator';
 import { AuthStackNavigator } from './AuthStackNavigator';

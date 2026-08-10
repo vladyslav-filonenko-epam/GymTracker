@@ -3,6 +3,8 @@ import React from 'react';
 import { renderHook } from '@testing-library/react-native';
 
 import { darkColors, lightColors } from 'src/shared/theme/colors';
+// ThemeContext must be imported directly (not from the barrel) to avoid the
+// utils ↔ theme circular dependency that makes ThemeContext undefined in tests.
 import { ThemeContext } from 'src/shared/theme/ThemeProvider';
 import { radius, spacing, typography } from 'src/shared/theme/tokens';
 import type { Theme, Typography } from 'src/shared/theme/types';

@@ -2,12 +2,6 @@ import * as Keychain from 'react-native-keychain';
 
 import { keychainUtils } from '../keychain';
 
-jest.mock('react-native-keychain', () => ({
-  setGenericPassword: jest.fn().mockResolvedValue(true),
-  getGenericPassword: jest.fn().mockResolvedValue({ password: 'hashed_pin' }),
-  resetGenericPassword: jest.fn().mockResolvedValue(true),
-}));
-
 const PINCODE_SERVICE = 'com.gymtracker.pincode';
 
 describe('keychainUtils', () => {

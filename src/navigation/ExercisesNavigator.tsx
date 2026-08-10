@@ -2,9 +2,9 @@ import React from 'react';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { ExercisesListScreen } from 'src/features/exercises/screens';
+import { ExercisesListScreen } from 'src/features/exercises';
 
-type ExercisesStackParamList = {
+export type ExercisesStackParamList = {
   ExercisesList: undefined;
 };
 

@@ -26,66 +26,46 @@ RootNavigator        ← src/navigation/RootNavigator.tsx
 | Param list types | PascalCase + ParamList suffix | `WorkoutStackParamList` |
 
 ## Param List Typing
-Every navigator must have a fully typed param list. Define it in the same file as the navigator:
+Every navigator must have a fully typed param list exported from the same file:
 ```ts
-type WorkoutStackParamList = {
+export type WorkoutStackParamList = {
   WorkoutList: undefined;
   WorkoutDetail: { workoutId: number };
   AddExercise: { workoutId: number };
 };
 ```
 
-Root-level param lists:
-```ts
-type RootStackParamList = {
-  Auth: NavigatorScreenParams<AuthStackParamList>;
-  App: NavigatorScreenParams<AppTabParamList>;
-};
+**Leaf param lists** (`WorkoutStackParamList`, `AuthStackParamList`, etc.) — export from their navigator file.
+**Composite param lists** (`AppTabParamList`, `RootStackParamList`) — define in `types.ts`, importing leaves via `NavigatorScreenParams<LeafParamList>`.
 
-type AppTabParamList = {
-  WorkoutTab: NavigatorScreenParams<WorkoutStackParamList>;
-  ExercisesTab: NavigatorScreenParams<ExercisesStackParamList>;
-  SettingsTab: NavigatorScreenParams<SettingsStackParamList>;
+## Using Navigation in Components
+
+Always use `useAppNavigation` from `src/navigation/hooks` — never receive `navigation` as a screen prop:
+```tsx
+import { useAppNavigation } from 'src/navigation/hooks';
+
+export const WorkoutListScreen = () => {
+  const navigation = useAppNavigation();
+  navigation.navigate('App', { screen: 'WorkoutTab', params: { screen: 'WorkoutDetail', params: { workoutId: 1 } } });
+  navigation.goBack();
 };
 ```
 
-## Navigator Template
+## Using Route Params
+
+Always use `useRoute` with an explicit `RouteProp` generic — never receive `route` as a screen prop:
 ```tsx
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useRoute } from '@react-navigation/native';
+import type { RouteProp } from '@react-navigation/native';
 
-import { WorkoutDetailScreen, WorkoutListScreen } from 'src/features/workout/screens';
-
-type WorkoutStackParamList = {
-  WorkoutList: undefined;
-  WorkoutDetail: { workoutId: number };
-};
-
-const Stack = createNativeStackNavigator<WorkoutStackParamList>();
-
-export const WorkoutNavigator = () => (
-  <Stack.Navigator screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="WorkoutList" component={WorkoutListScreen} />
-    <Stack.Screen name="WorkoutDetail" component={WorkoutDetailScreen} />
-  </Stack.Navigator>
-);
-```
-
-## Auth Gate
-`RootNavigator` reads `is_authenticated` from MMKV storage to decide which stack to render:
-```tsx
-export const RootNavigator = () => {
-  const isAuthenticated = storage.getBoolean('is_authenticated') ?? false;
-
-  return (
-    <NavigationContainer>
-      {isAuthenticated ? <AppTabs /> : <AuthStack />}
-    </NavigationContainer>
-  );
+export const WorkoutDetailScreen = () => {
+  const route = useRoute<RouteProp<WorkoutStackParamList, 'WorkoutDetail'>>();
+  const { workoutId } = route.params;
 };
 ```
 
 ## Rules
-- All param lists must be fully typed — no `any`, no missing params
-- `undefined` for screens with no params — never omit the type
 - Each feature stack is defined in its own file: `src/navigation/<Feature>Navigator.tsx`
 - Named exports only — no `export default`
+- Never use `navigation` or `route` screen props — always use `useAppNavigation` and `useRoute`
+- Never call `useNavigation()` directly — use `useAppNavigation` from `src/navigation/hooks`

@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react';
 
-import { storage } from 'src/shared/utils/storage';
+import { MMKV_KEYS, storage } from 'src/shared/utils';
 
 import { darkColors, lightColors } from './colors';
 import { radius, spacing, typography } from './tokens';
@@ -23,13 +23,13 @@ interface ThemeProviderProps {
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [currentTheme, setCurrentTheme] = useState<'dark' | 'light'>(() => {
-    const stored = storage.getString('theme');
+    const stored = storage.getString(MMKV_KEYS.THEME);
 
     return stored === 'light' || stored === 'dark' ? stored : 'dark';
   });
 
   const setTheme = (theme: 'dark' | 'light') => {
-    storage.set('theme', theme);
+    storage.set(MMKV_KEYS.THEME, theme);
     setCurrentTheme(theme);
   };
 

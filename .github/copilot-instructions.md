@@ -7,8 +7,9 @@ It is **local-only, single-user, no backend**.
 ## MVP Features
 1. **Auth** — Biometric (Face ID / Touch ID) with PIN as fallback
 2. **Workout Logging** — Create workouts, add exercises, log sets/reps/weight
-3. **Exercise Library** — Browse seeded exercises + create custom ones (name + photo)
-4. **Settings** — Enable/disable biometrics, choose theme (dark / light / system)
+3. **Workout Process** — Launch workout, track sets/reps/weight, mark exercises as complete
+4. **Exercise Library** — Browse seeded exercises + create custom ones
+5. **Settings** — Enable/disable biometrics, choose theme (dark / light / system)
 
 ## Tech Stack
 | Concern | Library |
@@ -30,13 +31,13 @@ It is **local-only, single-user, no backend**.
 src/
   features/
     auth/           # PIN + biometrics
-    workout/        # Workout logging
-    exercises/      # Exercise library
-    settings/       # App settings
+    workouts/        # Workout creation, logging, and processing
+    exercises/      # Exercises library, including custom exercises
+    settings/       # App settings, theme, language, biometrics, pincode
   shared/
     components/     # Reusable UI primitives (each in its own folder)
     hooks/          # Hooks used by 2+ features
-    utils/          # Pure helpers + createStyles hook
+    utils/          # Pure helpers
     constants/      # App-wide constants
     theme/          # ThemeProvider, useTheme, design tokens
     icons/          # SVG icon files — exported as named components via index.ts
@@ -53,8 +54,9 @@ src/
 - Named exports only — no default exports
 - No hardcoded colors, spacing, font sizes, or font weights — always use theme tokens
 - Styles live in `styles.ts` using `createStyles` from `src/shared/utils`; components import `useStyles` from `./styles`
-- `isDark`, `colors`, `typography` come from `useStyles` — only call `useTheme()` when you need `setTheme` or other non-style theme actions
+- only call `useTheme()` when you need `setTheme` or other non-style theme actions
 - Never override `fontSize` or `fontWeight` after spreading a typography token — add a new token to `tokens.ts`
 - Screens are thin — logic belongs in custom hooks
 - All DB access through repositories — never raw Drizzle in components
-- Every file must have a corresponding test file
+- Every file that contains logic must have a corresponding test file
+- **Promotion Rule:** start everything inside the component folder; promote up only when a second consumer appears — used by 2+ components in the same feature → `src/features/<name>/hooks|utils|constants/`; used by 2+ features → `src/shared/hooks|utils|constants/`

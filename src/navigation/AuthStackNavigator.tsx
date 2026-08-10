@@ -2,9 +2,9 @@ import React from 'react';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { PincodeScreen } from 'src/features/auth/screens';
+import { PincodeScreen } from 'src/features/auth';
 
-type AuthStackParamList = {
+export type AuthStackParamList = {
   Pincode: undefined;
 };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import type { ComponentType, ReactNode } from 'react';
 
 import { render, screen } from '@testing-library/react-native';
 
@@ -7,13 +7,13 @@ import { RootNavigator } from '../RootNavigator';
 jest.mock('@react-navigation/native', () => ({
   useNavigation: () => ({ navigate: jest.fn(), goBack: jest.fn(), replace: jest.fn() }),
   useRoute: () => ({ params: {} }),
-  NavigationContainer: ({ children }: { children: React.ReactNode }) => children,
+  NavigationContainer: ({ children }: { children: ReactNode }) => children,
 }));
 
 jest.mock('@react-navigation/native-stack', () => ({
   createNativeStackNavigator: () => ({
-    Navigator: ({ children }: { children: React.ReactNode }) => children,
-    Screen: ({ component: Component }: { component: React.ComponentType }) => <Component />,
+    Navigator: ({ children }: { children: ReactNode }) => children,
+    Screen: ({ component: Component }: { component: ComponentType }) => <Component />,
   }),
 }));
 

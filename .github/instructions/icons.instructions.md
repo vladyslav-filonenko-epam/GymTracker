@@ -34,19 +34,17 @@ export { default as DumbbellIcon } from './dumbbell.svg';
 ```tsx
 import { HomeIcon, DumbbellIcon } from 'src/shared/icons';
 
-const { colors } = useTheme();
-
+// In a component with styles.ts — get colors from useStyles (preferred)
+const { colors } = useStyles();
 <HomeIcon width={24} height={24} color={colors.accent.primary} />
+
+// In a component without styles.ts — use useTheme()
+const { colors } = useTheme();
 <DumbbellIcon width={20} height={20} color={colors.text.secondary} />
 ```
 
 ## `color` Prop
-Icons use `fill="currentColor"` internally. Pass `color` from `useTheme()` to tint them:
-```tsx
-<HomeIcon width={24} height={24} color={colors.accent.primary} />
-```
-
-Never pass a raw hex string — always use a theme color token.
+Icons use `fill="currentColor"` internally. Pass `color` from `useStyles` or `useTheme()` — never a raw hex string.
 
 ## SVG Sizing Behavior
 SVGs preserve aspect ratio by default (`preserveAspectRatio="xMidYMid meet"`):
@@ -65,7 +63,7 @@ For non-square icons, set `width` and `height` to match the icon's natural aspec
 That's it — no other files to update.
 
 ## Rules
-- Color must always come from `useTheme()` — never pass a raw hex string to `fill`
+- Color must come from `useStyles` (preferred) or `useTheme()` — never pass a raw hex string
 - Always specify `width` and `height` explicitly — don't rely on SVG defaults
 - Use the preferred sizes table — avoid arbitrary pixel values
 - SVG file names are kebab-case, export names are PascalCase + `Icon` suffix

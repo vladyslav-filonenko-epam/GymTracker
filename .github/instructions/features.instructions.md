@@ -37,24 +37,6 @@ Only create files/folders that will be used — do not create empty files or fol
 | `exercises` | `src/features/exercises/` | Exercise library, custom exercises |
 | `settings` | `src/features/settings/` | Theme, biometrics toggle |
 
-## Promotion Rule
-Start everything inside a component folder. Promote up only when a **second consumer** appears:
-- Used by 2+ components in the same feature → promote to `src/features/<name>/hooks|utils|constants/`
-- Used by 2+ features → promote to `src/shared/hooks|utils|constants/`
-
-## Zustand Store Slice
-Each feature has exactly one Zustand slice in `src/features/<name>/store/` with a barrel `index.ts`. See `zustand.instructions.md` for the full slice template and selector rules.
-
-## Async State Shape
-Use this shape for any async data:
-```ts
-interface AsyncState<T> {
-  data: T | null;
-  isLoading: boolean;
-  error: string | null;
-}
-```
-
 ## Barrel Export (`index.ts`)
 Only export what other features or navigation need. Keep internals private:
 ```ts
@@ -62,6 +44,7 @@ Only export what other features or navigation need. Keep internals private:
 export { WorkoutListScreen } from './screens';
 export { WorkoutCard } from './components';
 export { useWorkoutStore } from './store';
+
 export type { Workout, NewWorkout } from './types';
 ```
 
@@ -80,6 +63,4 @@ export interface Workout {
 
 ## Rules
 - Screens are thin — all logic lives in hooks
-- Zustand actions call repositories, then update local state
 - Never import a feature's internals from outside — only use its `index.ts` exports
-- Never import the Drizzle `db` instance outside `src/db/`
