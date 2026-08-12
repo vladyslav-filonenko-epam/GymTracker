@@ -1,5 +1,21 @@
+import type { ReactNode } from 'react';
+
 import 'jest-extended';
 import 'react-native-reanimated/mock';
+
+jest.mock('drizzle-orm/op-sqlite/migrator', () => ({
+  useMigrations: jest.fn(() => ({ success: true, error: undefined })),
+}));
+
+jest.mock('src/db/migrations/migrations', () => ({ default: {} }));
+
+jest.mock('@op-engineering/op-sqlite', () => ({
+  open: jest.fn(() => ({ execute: jest.fn(), close: jest.fn() })),
+}));
+
+jest.mock('drizzle-orm/op-sqlite', () => ({
+  drizzle: jest.fn(() => ({})),
+}));
 
 jest.mock('react-native-mmkv', () => ({
   MMKV: jest.fn(() => {
@@ -34,5 +50,12 @@ jest.mock('react-native-biometrics', () => ({
 
 jest.mock('react-native-safe-area-context', () => ({
   useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }),
-  SafeAreaProvider: ({ children }: { children: React.ReactNode }) => children,
+  SafeAreaProvider: ({ children }: { children: ReactNode }) => children,
 }));
+
+jest.mock('@shopify/flash-list', () => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { FlatList } = require('react-native');
+
+  return { FlashList: FlatList };
+});

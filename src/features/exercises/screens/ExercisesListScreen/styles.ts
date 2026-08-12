@@ -24,5 +24,8 @@ export const useStyles = createStyles(
       ...typography.body.md,
       color: colors.text.muted,
     },
+    loader: {
+      flex: 1,
+    },
   }),
 );

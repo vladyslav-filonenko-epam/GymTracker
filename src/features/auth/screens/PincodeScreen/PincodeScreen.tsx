@@ -48,6 +48,7 @@ export const PincodeScreen = () => {
     initAuth();
     return () => {
       if (shakeTimerRef.current) clearTimeout(shakeTimerRef.current);
+
       if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
     };
   }, [initAuth]);
@@ -177,6 +178,7 @@ export const PincodeScreen = () => {
 
   const handleDelete = useCallback(() => {
     if (pin.length === 0) return;
+
     setPin(prev => prev.slice(0, -1));
     pinLength.value = withTiming(pin.length - 1, { duration: 100 });
   }, [pin, pinLength]);

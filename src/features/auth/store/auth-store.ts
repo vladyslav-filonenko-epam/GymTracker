@@ -48,11 +48,13 @@ export const useAuthStore = create<AuthState>(set => ({
     const storedHash = await keychainUtils.getPinHash();
 
     if (!storedHash) return false;
+
     const match = hashPin(pin) === storedHash;
 
     if (match) {
       set({ isAuthenticated: true });
     }
+
     return match;
   },
 

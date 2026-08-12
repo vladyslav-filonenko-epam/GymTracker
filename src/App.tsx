@@ -1,9 +1,8 @@
-import React from 'react';
-
 import { StatusBar } from 'react-native';
 
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { DbProvider } from 'src/shared/components';
 import 'src/shared/localization';
 import { ThemeProvider } from 'src/shared/theme';
 
@@ -14,7 +13,9 @@ export const App = () => (
     <ThemeProvider>
       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
 
-      <RootNavigator />
+      <DbProvider>
+        <RootNavigator />
+      </DbProvider>
     </ThemeProvider>
   </SafeAreaProvider>
 );
