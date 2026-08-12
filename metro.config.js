@@ -11,11 +11,11 @@ const { assetExts, sourceExts } = defaultConfig.resolver;
 
 const config = {
   transformer: {
-    babelTransformerPath: require.resolve('react-native-svg-transformer/react-native'),
+    babelTransformerPath: require.resolve('./metro-transformer.js'),
   },
   resolver: {
     assetExts: assetExts.filter(ext => ext !== 'svg'),
-    sourceExts: [...sourceExts, 'svg'],
+    sourceExts: [...sourceExts, 'svg', 'sql'],
   },
 };
 

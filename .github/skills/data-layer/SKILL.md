@@ -1,6 +1,6 @@
 ---
 name: data-layer
-description: 'op-sqlite + drizzle-orm patterns for React Native. Use when creating or modifying database schema, repositories, migrations, or queries.'
+description: 'op-sqlite + drizzle-orm patterns for React Native. Use when creating or modifying database schema, repositories, migrations, or queries. Trigger on: op-sqlite, drizzle-orm, drizzle-kit, database, db, SQLite, schema, migration, migrations not running, table does not exist, seed, seedExercises, repository, CREATE TABLE, useMigrations, drizzle.config, db init, db setup, insert fails, query fails, findAll, findById, transaction, RQB, relational query, db index, db instance, or any work inside src/db/.'
 ---
 
 # op-sqlite + drizzle-orm

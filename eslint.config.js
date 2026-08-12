@@ -25,6 +25,8 @@ module.exports = [
       'babel.config.js',
       'metro.config.js',
       'jest.config.js',
+      'metro-transformer.js',
+      '__mocks__/**',
       '.prettierrc.js',
       'eslint.config.js',
     ],
@@ -115,6 +117,9 @@ module.exports = [
         'error',
         { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
         { blankLine: 'any', prev: ['const', 'let', 'var'], next: ['const', 'let', 'var'] },
+        { blankLine: 'always', prev: '*', next: 'if' },
+        { blankLine: 'any', prev: 'if', next: 'if' },
+        { blankLine: 'always', prev: 'if', next: '*' },
       ],
 
       // TS — disable base JS rules that have TS-aware replacements

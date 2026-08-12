@@ -104,6 +104,7 @@ export { WorkoutCard } from './WorkoutCard';
 - Import `useStyles` from `./styles` — never call `useTheme()` for styling
 - Extract all business logic into hooks (`hooks.ts` or feature-level hooks)
 - No commented-out code
+- **Lists**: always use `FlashList` from `@shopify/flash-list` — never `FlatList`. Do NOT pass `estimatedItemSize` (v2 handles sizing automatically). Ensure the parent container has defined bounds (`flex: 1` or fixed height).
 
 ## Where to Place
 | Type | Scope | Location |

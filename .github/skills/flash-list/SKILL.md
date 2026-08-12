@@ -1,3 +1,8 @@
+---
+name: flash-list
+description: 'FlashList v2 patterns for React Native. Use when implementing any scrollable list, migrating FlatList to FlashList, or when the user mentions FlashList, FlatList, list rendering, scrollable list, or list performance.'
+---
+
 # Skill: React Native FlashList v2 Implementation & Migration
 
 ## Purpose

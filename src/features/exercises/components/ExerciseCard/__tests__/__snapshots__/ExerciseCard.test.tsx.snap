@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`ExerciseCard should match snapshot 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "backgroundColor": "#161618",
+      "borderColor": "rgba(255, 255, 255, 0.08)",
+      "borderRadius": 12,
+      "borderWidth": 1,
+      "flexDirection": "row",
+      "marginBottom": 12,
+      "padding": 16,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "flex": 1,
+        "marginLeft": 12,
+      }
+    }
+  >
+    <Text
+      style={
+        {
+          "color": "#F0F0F2",
+          "fontSize": 20,
+          "fontWeight": "600",
+        }
+      }
+    >
+      Barbell Bench Press
+    </Text>
+    <Text
+      style={
+        {
+          "color": "#888896",
+          "fontSize": 14,
+          "fontWeight": "400",
+        }
+      }
+    >
+      CHEST, ARMS
+    </Text>
+    <Text
+      style={
+        {
+          "color": "#555560",
+          "fontSize": 12,
+          "fontWeight": "400",
+        }
+      }
+    >
+      Barbell
+    </Text>
+  </View>
+</View>
+`;
